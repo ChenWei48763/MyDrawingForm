@@ -1,92 +1,125 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MyDrawingForm;
-using System;
+using MyDrawingFormTests;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyDrawingForm.Tests
 {
     [TestClass()]
     public class ModelTests
     {
-        [TestMethod()]
-        public void ModelTest()
+        private Model model;
+        IState mockState = new MockState();
+
+        [TestInitialize]
+        public void Setup()
         {
-            Assert.Fail();
+            this.model = new Model();
         }
 
         [TestMethod()]
         public void EnterPointerStateTest()
         {
-            Assert.Fail();
+            model.EnterPointerState();
+            Assert.AreEqual("", model.GetDrawingMode());
         }
 
         [TestMethod()]
         public void EnterDrawingStateTest()
         {
-            Assert.Fail();
+            model.SetDrawingMode("Process");
+            Assert.AreEqual("Process", model.GetDrawingMode());
         }
 
         [TestMethod()]
         public void NotifyModelChangedTest()
         {
-            Assert.Fail();
+            bool isNotified = false;
+            model.ModelChanged += () => isNotified = true;
+            model.NotifyModelChanged();
+            Assert.IsTrue(isNotified);
         }
 
         [TestMethod()]
         public void PointerPressedTest()
         {
-            Assert.Fail();
+            mockState.Initialize(model);
+            model.currentState = mockState;
+            model.PointerPressed(20, 40);
+            MockState state = (MockState)model.currentState;
+            Assert.AreEqual(state.MouseDownX, 20);
+            Assert.AreEqual(state.MouseDownY, 40);
         }
 
         [TestMethod()]
         public void PointerMovedTest()
         {
-            Assert.Fail();
+            mockState.Initialize(model);
+            model.currentState = mockState;
+            model.PointerMoved(40, 60);
+            MockState state = (MockState)model.currentState;
+            Assert.AreEqual(state.MouseMoveX, 40);
+            Assert.AreEqual(state.MouseMoveY, 60);
         }
 
         [TestMethod()]
         public void PointerReleasedTest()
         {
-            Assert.Fail();
+            mockState.Initialize(model);
+            model.currentState = mockState;
+            model.PointerReleased(60, 80);
+            MockState state = (MockState)model.currentState;
+            Assert.AreEqual(state.MouseUpX, 60);
+            Assert.AreEqual(state.MouseUpY, 80);
         }
 
         [TestMethod()]
         public void DrawTest()
         {
-            Assert.Fail();
+            mockState.Initialize(model);
+            model.currentState = mockState;
+            IGraphics graphics = new MockGraphic();
+            model.Draw(graphics);
+            MockState state = (MockState)model.currentState;
+            Assert.IsTrue(state.isOnPaintCalled);
         }
 
         [TestMethod()]
         public void GetShapesTest()
         {
-            Assert.Fail();
+            model.AddShape("Process", "test", 10, 20, 30, 40);
+            Assert.IsNotNull(model.GetShapes());
         }
 
         [TestMethod()]
         public void AddShapeTest()
         {
-            Assert.Fail();
+            model.AddShape("Process", "Test", 10, 20, 30, 40);
+            List<Shape> shapes = model.GetShapes();
+            Assert.AreEqual(1, shapes.Count);
+            Assert.AreEqual("Process", shapes[0].ShapeName);
+            Assert.AreEqual("", model.GetDrawingMode());
+
         }
 
         [TestMethod()]
         public void GetDrawingModeTest()
         {
-            Assert.Fail();
+            model.SetDrawingMode("Process");
+            Assert.AreEqual("Process", model.GetDrawingMode());
         }
 
         [TestMethod()]
         public void SetDrawingModeTest()
         {
-            Assert.Fail();
+            model.SetDrawingMode("Process");
+            Assert.AreEqual("Process", model.GetDrawingMode());
         }
 
         [TestMethod()]
         public void SetSelectModeTest()
         {
-            Assert.Fail();
+            model.SetSelectMode();
+            Assert.AreEqual("", model.GetDrawingMode());
         }
     }
 }
