@@ -65,6 +65,7 @@ namespace MyDrawingForm
                 _m.AddShape(_m.GetDrawingMode(), GenerateRandomText(8), _previewShape.X, _previewShape.Y, _previewShape.Height, _previewShape.Width);
                 _m.EnterPointerState();
                 _pointerState.AddSelectedShape(_previewShape);
+                _previewShape = null;
             }
         }
 

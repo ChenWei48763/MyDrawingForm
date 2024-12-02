@@ -75,7 +75,7 @@ namespace MyDrawingForm
         public void AddShape(string shapeName, string text, float x, float y, float height, float width)
         {
             shapes.AddNewShape(shapeName, text, x, y, height, width);
-            //SetSelectMode();
+            SetSelectMode();
             NotifyModelChanged();
         }
 

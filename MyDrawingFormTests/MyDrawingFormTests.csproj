@@ -53,6 +53,7 @@
     <Compile Include="MockGraphic.cs" />
     <Compile Include="MockState.cs" />
     <Compile Include="ModelTests.cs" />
+    <Compile Include="PresentationModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -69,7 +69,10 @@ namespace MyDrawingForm
 
         public void DrawBoundingBox(float x, float y, float height, float width)
         {
-            _graphics.DrawRectangle(Pens.Red, x, y, width, height);
+            using (Pen redPen = new Pen(Color.Red, 3)) // 使用紅色且粗一點的筆
+            {
+                _graphics.DrawRectangle(redPen, x, y, width, height);
+            }
         }
     }
 }

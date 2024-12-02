@@ -47,7 +47,7 @@ namespace MyDrawingForm
         public abstract bool IsPointInShape(float x, float y);
         public void DrawBoundingBox(IGraphics graphics)
         {
-            graphics.DrawRectangle(X, Y, Height, Width);
+            graphics.DrawBoundingBox(X, Y, Height, Width);
         }
     }
 }
