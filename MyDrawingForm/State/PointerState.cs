@@ -15,6 +15,7 @@ namespace MyDrawingForm
         private float _previewX;
         private float _previewY;
         private bool _isPressed;
+        private bool _isTextPressed;
 
         public void Initialize(Model m)
         {
@@ -86,6 +87,7 @@ namespace MyDrawingForm
                 if (selectedShape != null)
                 {
                     selectedShape.DrawBoundingBox(graphics);
+                    selectedShape.DrawTextBoundingBox(graphics);
                 }
 
             }

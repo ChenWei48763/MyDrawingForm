@@ -16,13 +16,31 @@ namespace MyDrawingForm
 
         public override void Draw(IGraphics graphics)
         {
-            graphics.DrawRectangle(X, Y, Height, Width);
-            graphics.DrawString(Text, X + Math.Abs(Width) / 3, Y + Math.Abs(Height) / 3);
+            float adjustedX = X;
+            float adjustedY = Y;
+            float adjustedWidth = Width;
+            float adjustedHeight = Height;
+
+            // 調整 X 和 Width
+            if (Width < 0)
+            {
+                adjustedX += Width;
+                adjustedWidth = -Width;
+            }
+
+            // 調整 Y 和 Height
+            if (Height < 0)
+            {
+                adjustedY += Height;
+                adjustedHeight = -Height;
+            }
+            graphics.DrawRectangle(adjustedX, adjustedY, adjustedHeight, adjustedWidth);
+            graphics.DrawString(Text, adjustedX + Math.Abs(adjustedWidth) / 3, Y + Math.Abs(adjustedHeight) / 3);
         }
         public override bool IsPointInShape(float x, float y)
         {
             GraphicsPath path = new GraphicsPath();
-            path.AddRectangle(new Rectangle((int)X, (int)Y, (int)Height, (int)Width));
+            path.AddRectangle(new Rectangle((int)X, (int)Y, (int)Width, (int)Height));
             return path.IsVisible(new Point((int)x, (int)y));
         }
     }

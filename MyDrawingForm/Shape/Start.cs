@@ -21,7 +21,7 @@ namespace MyDrawingForm
         public override bool IsPointInShape(float x, float y)
         {
             GraphicsPath path = new GraphicsPath();
-            path.AddEllipse(new Rectangle((int)X, (int)Y, (int)Height, (int)Width));
+            path.AddEllipse(new Rectangle((int)X, (int)Y, (int)Width, (int)Height));
             return path.IsVisible(new Point((int)x, (int)y));
         }
     }

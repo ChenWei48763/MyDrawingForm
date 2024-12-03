@@ -49,5 +49,9 @@ namespace MyDrawingForm
         {
             graphics.DrawBoundingBox(X, Y, Height, Width);
         }
+        public void DrawTextBoundingBox(IGraphics graphics)
+        {
+            graphics.DrawTextBoundingBox(X + Width / 3, Y + Height / 3, 20, 60);
+        }
     }
 }

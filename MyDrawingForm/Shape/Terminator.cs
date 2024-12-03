@@ -15,17 +15,34 @@ namespace MyDrawingForm
 
         public override void Draw(IGraphics graphics)
         {
-            Normalize();
+            float adjustedX = X;
+            float adjustedY = Y;
+            float adjustedWidth = Width;
+            float adjustedHeight = Height;
+
+            // 調整 X 和 Width
+            if (Width < 0)
+            {
+                adjustedX += Width;
+                adjustedWidth = -Width;
+            }
+
+            // 調整 Y 和 Height
+            if (Height < 0)
+            {
+                adjustedY += Height;
+                adjustedHeight = -Height;
+            }
             // 繪製左半圓
-            graphics.DrawArc(X, Y, Height, Height, 90, 180);
+            graphics.DrawArc(adjustedX, adjustedY, adjustedHeight, adjustedHeight, 90, 180);
             // 繪製右半圓
-            graphics.DrawArc(X + Width - Height, Y, Height, Height, 270, 180);
+            graphics.DrawArc(adjustedX + adjustedWidth - adjustedHeight, adjustedY, adjustedHeight, adjustedHeight, 270, 180);
             // 繪製上方直線
-            graphics.DrawLine(X + Height / 2, Y, X + Width - Height / 2, Y);
+            graphics.DrawLine(adjustedX + adjustedHeight / 2, adjustedY, adjustedX + adjustedWidth - adjustedHeight / 2, adjustedY);
             // 繪製下方直線
-            graphics.DrawLine(X + Height / 2, Y + Height, X + Width - Height / 2, Y + Height);
+            graphics.DrawLine(adjustedX + adjustedHeight / 2, adjustedY + adjustedHeight, adjustedX + adjustedWidth - adjustedHeight / 2, adjustedY + adjustedHeight);
             // 繪製文字
-            graphics.DrawString(Text, X + Width / 3, Y + Height / 3);
+            graphics.DrawString(Text, adjustedX + adjustedWidth / 3, adjustedY + adjustedHeight / 3);
         }
 
         public override bool IsPointInShape(float x, float y)
