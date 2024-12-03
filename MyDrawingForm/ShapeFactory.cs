@@ -10,7 +10,7 @@ using System.Windows.Forms;
 namespace MyDrawingForm
 {
     // 用來創建和管理圖形的工廠類別
-    internal class ShapeFactory
+    public class ShapeFactory
     {
         public Shape Create(string shapeName, int id, string text, float x, float y, float height, float width)
         {

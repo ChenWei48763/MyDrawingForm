@@ -231,18 +231,12 @@ namespace MyDrawingForm
 
         public void CreateBlockChanged()
         {
-            try
+
+            if (IsTextValid() && IsShapeValid() && IsXValid() && IsYValid() && IsHeightValid() && IsWidthValid())
             {
-                if (IsTextValid() && IsShapeValid() && IsXValid() && IsYValid() && IsHeightValid() && IsWidthValid())
-                {
-                    _isCreateEnabled = true;
-                }
-                else
-                {
-                    _isCreateEnabled = false;
-                }
+                _isCreateEnabled = true;
             }
-            catch (Exception)
+            else
             {
                 _isCreateEnabled = false;
             }

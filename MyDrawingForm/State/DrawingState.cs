@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MyDrawingForm
 {
-    internal class DrawingState : IState
+    public class DrawingState : IState
     {
         Model _m;
         Shape _previewShape;

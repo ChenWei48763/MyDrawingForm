@@ -38,6 +38,10 @@ namespace MyDrawingFormTests
         public void DrawBoundingBox(float x, float y, float height, float width)
         {
         }
+
+        public void DrawTextBoundingBox(float x, float y, float height, float width)
+        {
+        }
     }
 }
 

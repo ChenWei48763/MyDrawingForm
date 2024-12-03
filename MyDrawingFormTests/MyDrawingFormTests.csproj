@@ -36,6 +36,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -55,6 +57,14 @@
     <Compile Include="ModelTests.cs" />
     <Compile Include="PresentationModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Shape\ShapeTests.cs" />
+    <Compile Include="Shape\StartTests.cs" />
+    <Compile Include="Shape\DecisionTests.cs" />
+    <Compile Include="Shape\ProcessTests.cs" />
+    <Compile Include="Shape\TerminatorTests.cs" />
+    <Compile Include="State\DrawingStateTests.cs" />
+    <Compile Include="State\PointerStateTests.cs" />
+    <Compile Include="ShapeFactoryTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MyDrawingForm\MyDrawingForm.csproj">
@@ -62,6 +72,7 @@
       <Name>MyDrawingForm</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
