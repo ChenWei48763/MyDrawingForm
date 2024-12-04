@@ -7,6 +7,7 @@ namespace MyDrawingForm.Tests
     public class ShapeFactoryTests
     {
         ShapeFactory factory = new ShapeFactory();
+
         [TestMethod]
         public void CreateTest()
         {
@@ -18,6 +19,7 @@ namespace MyDrawingForm.Tests
             Assert.AreEqual(20, shape.Y);
             Assert.AreEqual(30, shape.Height);
             Assert.AreEqual(40, shape.Width);
+
             shape = factory.Create("Process", 2, "test", 10, 20, 30, 40);
             Assert.AreEqual(2, shape.ShapeId);
             Assert.AreEqual("Process", shape.ShapeName);
@@ -26,6 +28,7 @@ namespace MyDrawingForm.Tests
             Assert.AreEqual(20, shape.Y);
             Assert.AreEqual(30, shape.Height);
             Assert.AreEqual(40, shape.Width);
+
             shape = factory.Create("Decision", 3, "test", 10, 20, 30, 40);
             Assert.AreEqual(3, shape.ShapeId);
             Assert.AreEqual("Decision", shape.ShapeName);
@@ -34,6 +37,7 @@ namespace MyDrawingForm.Tests
             Assert.AreEqual(20, shape.Y);
             Assert.AreEqual(30, shape.Height);
             Assert.AreEqual(40, shape.Width);
+
             shape = factory.Create("Terminator", 4, "test", 10, 20, 30, 40);
             Assert.AreEqual(4, shape.ShapeId);
             Assert.AreEqual("Terminator", shape.ShapeName);
@@ -42,12 +46,9 @@ namespace MyDrawingForm.Tests
             Assert.AreEqual(20, shape.Y);
             Assert.AreEqual(30, shape.Height);
             Assert.AreEqual(40, shape.Width);
-        }
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void CreateInvalidShapeTest()
-        {
-            factory.Create("InvalidShape", 1, "Test", 10, 20, 30, 40);
+
+            shape = factory.Create("Invalid", 5, "test", 10, 20, 30, 40);
+            Assert.IsNull(shape);
         }
     }
 }

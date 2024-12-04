@@ -25,7 +25,7 @@ namespace MyDrawingForm
                 case "Decision":
                     return new Decision(id, text, x, y, height, width);
                 default:
-                    throw new ArgumentException("Invalid shape type");
+                    return null;
             }
         }
     }
