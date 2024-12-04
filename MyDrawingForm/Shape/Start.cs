@@ -16,7 +16,7 @@ namespace MyDrawingForm
         public override void Draw(IGraphics graphics)
         {
             graphics.DrawEllipse(X, Y, Height, Width);
-            graphics.DrawString(Text, X + Width / 3, Y + Height / 3);
+            graphics.DrawString(Text, TextX, TextY);
         }
         public override bool IsPointInShape(float x, float y)
         {

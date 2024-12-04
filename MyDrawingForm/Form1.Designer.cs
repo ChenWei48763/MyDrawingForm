@@ -323,7 +323,7 @@
             // 關於ToolStripMenuItem
             // 
             this.關於ToolStripMenuItem.Name = "關於ToolStripMenuItem";
-            this.關於ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.關於ToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
             this.關於ToolStripMenuItem.Text = "關於";
             // 
             // toolStrip1
@@ -393,7 +393,7 @@
             this.ButtonSelect.Size = new System.Drawing.Size(23, 22);
             this.ButtonSelect.Text = "toolStripButton1";
             this.ButtonSelect.ToolTipText = "Select";
-            this.ButtonSelect.CheckedChanged += new System.EventHandler(this.ButtonSelect_Click);
+            this.ButtonSelect.Click += new System.EventHandler(this.ButtonSelect_Click);
             // 
             // drawPanel
             // 

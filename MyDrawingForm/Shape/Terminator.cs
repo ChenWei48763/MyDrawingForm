@@ -42,7 +42,7 @@ namespace MyDrawingForm
             // 繪製下方直線
             graphics.DrawLine(adjustedX + adjustedHeight / 2, adjustedY + adjustedHeight, adjustedX + adjustedWidth - adjustedHeight / 2, adjustedY + adjustedHeight);
             // 繪製文字
-            graphics.DrawString(Text, adjustedX + adjustedWidth / 3, adjustedY + adjustedHeight / 3);
+            graphics.DrawString(Text, TextX, TextY);
         }
 
         public override bool IsPointInShape(float x, float y)

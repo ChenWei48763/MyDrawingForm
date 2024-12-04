@@ -42,6 +42,9 @@ namespace MyDrawingFormTests
         public void DrawTextBoundingBox(float x, float y, float height, float width)
         {
         }
+        public void DrawFilledEllipse(float x, float y, float height, float width)
+        {
+        }
     }
 }
 

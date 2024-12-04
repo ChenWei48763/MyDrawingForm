@@ -69,7 +69,7 @@ namespace MyDrawingForm
 
         public void DrawBoundingBox(float x, float y, float height, float width)
         {
-            using (Pen redPen = new Pen(Color.Red, 3)) 
+            using (Pen redPen = new Pen(Color.Red, 3))
             {
                 _graphics.DrawRectangle(redPen, x, y, width, height);
             }
@@ -77,9 +77,17 @@ namespace MyDrawingForm
 
         public void DrawTextBoundingBox(float x, float y, float height, float width)
         {
-            using (Pen redPen = new Pen(Color.Red, 2)) 
+            using (Pen redPen = new Pen(Color.Red, 2))
             {
                 _graphics.DrawRectangle(redPen, x, y, width, height);
+            }
+        }
+
+        public void DrawFilledEllipse(float x, float y, float height, float width)
+        {
+            using (Brush brush = new SolidBrush(Color.Orange))
+            {
+                _graphics.FillEllipse(brush, x, y, width, height);
             }
         }
     }

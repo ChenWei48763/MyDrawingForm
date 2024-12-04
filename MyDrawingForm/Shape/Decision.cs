@@ -17,7 +17,7 @@ namespace MyDrawingForm
         public override void Draw(IGraphics graphics)
         {
             graphics.DrawPolygon(X, Y, Width, Height);
-            graphics.DrawString(Text, X + Math.Abs(Width) / 3, Y + Math.Abs(Height) / 3);
+            graphics.DrawString(Text, TextX, TextY);
         }
 
         public override bool IsPointInShape(float x, float y)

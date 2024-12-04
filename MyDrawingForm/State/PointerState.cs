@@ -15,7 +15,7 @@ namespace MyDrawingForm
         private float _previewX;
         private float _previewY;
         private bool _isPressed;
-        //private bool _isTextPressed;
+        public bool _isTextHandlePressed;
 
         public void Initialize(Model m)
         {
@@ -29,13 +29,25 @@ namespace MyDrawingForm
             // 檢查是否有選到圖形，使用相反順序檢查，以便選到最上層的圖形
             foreach (Shape _shape in Enumerable.Reverse(_m.GetShapes()))
             {
-                if (_shape.IsPointInShape(x, y))
+                if (_shape.IsPointInTextHandle(x, y))
                 {
                     selectedShapes.Clear();
                     AddSelectedShape(_shape);
                     _previewX = x;
                     _previewY = y;
                     _isPressed = true;
+                    _isTextHandlePressed = true;
+                    _m.NotifyModelChanged();
+                    return;
+                }
+                else if (_shape.IsPointInShape(x, y))
+                {
+                    selectedShapes.Clear();
+                    AddSelectedShape(_shape);
+                    _previewX = x;
+                    _previewY = y;
+                    _isPressed = true;
+                    _isTextHandlePressed = false;
                     _m.NotifyModelChanged();
                     return;
                 }
@@ -59,8 +71,20 @@ namespace MyDrawingForm
 
                 foreach (Shape _shape in selectedShapes)
                 {
-                    _shape.X += _displacementX;
-                    _shape.Y += _displacementY;
+                    if (_isTextHandlePressed)
+                    {
+                        // 只移動文字
+                        _shape.TextX += _displacementX;
+                        _shape.TextY += _displacementY;
+                    }
+                    else
+                    {
+                        // 移動整個形狀
+                        _shape.X += _displacementX;
+                        _shape.Y += _displacementY;
+                        _shape.TextX += _displacementX; // 同時移動文字
+                        _shape.TextY += _displacementY; // 同時移動文字
+                    }
                     _previewX = x;
                     _previewY = y;
                 }
@@ -71,6 +95,7 @@ namespace MyDrawingForm
         public void MouseUp(float x, float y)
         {
             _isPressed = false;
+            _isTextHandlePressed = false;
         }
 
         public void OnPaint(IGraphics graphics)
@@ -89,7 +114,6 @@ namespace MyDrawingForm
                     selectedShape.DrawBoundingBox(graphics);
                     selectedShape.DrawTextBoundingBox(graphics);
                 }
-
             }
         }
     }

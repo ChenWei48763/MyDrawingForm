@@ -35,7 +35,7 @@ namespace MyDrawingForm
                 adjustedHeight = -Height;
             }
             graphics.DrawRectangle(adjustedX, adjustedY, adjustedHeight, adjustedWidth);
-            graphics.DrawString(Text, adjustedX + Math.Abs(adjustedWidth) / 3, Y + Math.Abs(adjustedHeight) / 3);
+            graphics.DrawString(Text, TextX, TextY);
         }
         public override bool IsPointInShape(float x, float y)
         {

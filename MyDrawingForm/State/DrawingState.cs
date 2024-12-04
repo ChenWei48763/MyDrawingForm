@@ -62,6 +62,8 @@ namespace MyDrawingForm
             else
             {
                 _previewShape.Normalize();
+                _previewShape.TextX = _previewShape.X + _previewShape.Width / 3;
+                _previewShape.TextY = _previewShape.Y + _previewShape.Height / 3;
                 _m.AddShape(_m.GetDrawingMode(), GenerateRandomText(8), _previewShape.X, _previewShape.Y, _previewShape.Height, _previewShape.Width);
                 _m.EnterPointerState();
                 _pointerState.AddSelectedShape(_previewShape);

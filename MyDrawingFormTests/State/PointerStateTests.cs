@@ -30,13 +30,24 @@ namespace MyDrawingForm.Tests
         public void MouseDownTest()
         {
             _model.AddShape("Process", "test", 10, 20, 30, 40);
+            var shape = _model.GetShapes()[0];
 
+            // 測試點擊形狀內部
             _pointerState.MouseDown(15, 25);
             Assert.AreEqual(1, _pointerState.selectedShapes.Count);
-            Assert.AreEqual(_model.GetShapes()[0], _pointerState.selectedShapes[0]);
+            Assert.AreEqual(shape, _pointerState.selectedShapes[0]);
 
+            // 測試點擊形狀外部
             _pointerState.MouseDown(5, 5);
             Assert.AreEqual(1, _pointerState.selectedShapes.Count);
+
+            // 測試點擊文字框上的小球
+            shape.TextX = 10 + 30 / 3;
+            shape.TextY = 20 + 40 / 3;
+            _pointerState.MouseDown(shape.TextX + 35, shape.TextY - 6);
+            Assert.AreEqual(1, _pointerState.selectedShapes.Count);
+            Assert.AreEqual(shape, _pointerState.selectedShapes[0]);
+            Assert.IsTrue(_pointerState._isTextHandlePressed);
         }
 
         [TestMethod]
@@ -59,11 +70,19 @@ namespace MyDrawingForm.Tests
             _model.AddShape("Process", "test", 10, 20, 30, 40);
             var shape = _model.GetShapes()[0];
 
+            // 測試移動整個形狀
             _pointerState.MouseDown(15, 25);
             _pointerState.MouseMove(25, 35);
-
             Assert.AreEqual(20, shape.X);
             Assert.AreEqual(30, shape.Y);
+
+            // 測試移動文字框上的小球
+            shape.TextX = 10 + 30 / 3;
+            shape.TextY = 20 + 40 / 3;
+            _pointerState.MouseDown(shape.TextX + 35, shape.TextY - 6);
+            _pointerState.MouseMove(shape.TextX + 10, shape.TextY + 10);
+            Assert.AreEqual(-5, shape.TextX);
+            Assert.AreEqual(49, shape.TextY);
 
             // 無效狀態測試
             _pointerState.MouseUp(25, 35);

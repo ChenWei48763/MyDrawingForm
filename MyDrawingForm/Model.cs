@@ -31,14 +31,12 @@ namespace MyDrawingForm
         {
             pointerState.Initialize(this);
             currentState = pointerState;
-            //Console.WriteLine("Enter Pointer State");
         }
 
         public void EnterDrawingState()
         {
             drawingState.Initialize(this);
             currentState = drawingState;
-            //Console.WriteLine("Enter Drawing State");
         }
 
         public void NotifyModelChanged()
@@ -75,7 +73,7 @@ namespace MyDrawingForm
         public void AddShape(string shapeName, string text, float x, float y, float height, float width)
         {
             shapes.AddNewShape(shapeName, text, x, y, height, width);
-            //SetSelectMode();
+            SetSelectMode();
             NotifyModelChanged();
         }
 
@@ -87,7 +85,6 @@ namespace MyDrawingForm
         public void SetDrawingMode(string mode)
         {
             _mode = mode;
-            Console.WriteLine("Set Drawing Mode: " + mode);
             EnterDrawingState();
             NotifyModelChanged();
         }
@@ -95,7 +92,6 @@ namespace MyDrawingForm
         public void SetSelectMode()
         {
             _mode = "";
-            Console.WriteLine("Set Select Mode");
             EnterPointerState();
             NotifyModelChanged();
         }
