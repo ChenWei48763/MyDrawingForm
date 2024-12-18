@@ -13,6 +13,7 @@ namespace MyDrawingForm
     public class Model
     {
         internal Shapes shapes = new Shapes();
+        public CommandManager commandManager = new CommandManager();
         public event ModelChangedEventHandler ModelChanged;
         public delegate void ModelChangedEventHandler();
         private string _mode = "";
@@ -77,6 +78,12 @@ namespace MyDrawingForm
             NotifyModelChanged();
         }
 
+        public void RemoveShape(int id)
+        {
+            shapes.DeleteShape(id);
+            NotifyModelChanged();
+        }
+
         public string GetDrawingMode()
         {
             return _mode;
@@ -94,6 +101,15 @@ namespace MyDrawingForm
             _mode = "";
             EnterPointerState();
             NotifyModelChanged();
+        }
+
+        public void Undo()
+        {
+            commandManager.Undo();
+        }
+        public void Redo()
+        {
+            commandManager.Redo();
         }
     }
 }

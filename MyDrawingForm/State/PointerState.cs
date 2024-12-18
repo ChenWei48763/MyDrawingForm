@@ -15,13 +15,16 @@ namespace MyDrawingForm
         private float _previewX;
         private float _previewY;
         private bool _isPressed;
-        public bool _isTextHandlePressed;
+        private bool _isTextHandlePressed;
+        private bool _isOnceClickOnTextHandle;
+        private bool _isDoubleClickOnTextHandle;
 
         public void Initialize(Model m)
         {
             // 當進入PointerState時，應該尚未選取任何形狀，因此清空selectedShapes
             this._m = m;
             selectedShapes.Clear();
+            _isOnceClickOnTextHandle = false;
         }
 
         public void MouseDown(float x, float y)
@@ -31,14 +34,33 @@ namespace MyDrawingForm
             {
                 if (_shape.IsPointInTextHandle(x, y))
                 {
-                    selectedShapes.Clear();
-                    AddSelectedShape(_shape);
-                    _previewX = x;
-                    _previewY = y;
-                    _isPressed = true;
-                    _isTextHandlePressed = true;
-                    _m.NotifyModelChanged();
-                    return;
+                    _isDoubleClickOnTextHandle = _isOnceClickOnTextHandle;
+
+                    if (_isDoubleClickOnTextHandle)
+                    {
+                        using (var dialog = new Form2(_shape.Text))
+                        {
+                            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                            {
+                                _shape.UpdateText(dialog.GetTextBoxText());
+                                _m.NotifyModelChanged();
+                            }
+                        }
+                        _isOnceClickOnTextHandle = false;
+                        return;
+                    }
+                    else
+                    {
+                        selectedShapes.Clear();
+                        AddSelectedShape(_shape);
+                        _previewX = x;
+                        _previewY = y;
+                        _isPressed = true;
+                        _isTextHandlePressed = true;
+                        _isOnceClickOnTextHandle = true;
+                        _m.NotifyModelChanged();
+                        return;
+                    }
                 }
                 else if (_shape.IsPointInShape(x, y))
                 {
@@ -48,6 +70,7 @@ namespace MyDrawingForm
                     _previewY = y;
                     _isPressed = true;
                     _isTextHandlePressed = false;
+                    _isOnceClickOnTextHandle = false;
                     _m.NotifyModelChanged();
                     return;
                 }

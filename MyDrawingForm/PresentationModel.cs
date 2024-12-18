@@ -20,6 +20,9 @@ namespace MyDrawingForm
         private bool _isTerminatorChecked;
         private bool _isSelectChecked;
         private bool _isCreateEnabled;
+        private bool _isButtonOKEnabled;
+        private bool _isButtonUndoEnabled;
+        private bool _isButtonRedoEnabled;
         private Cursor _cursor;
         private string _shape;
         private string _text;
@@ -27,6 +30,8 @@ namespace MyDrawingForm
         private string _y;
         private string _height;
         private string _width;
+        private string _initialText;
+        private string _modifyText;
 
         public Model model
         {
@@ -81,6 +86,31 @@ namespace MyDrawingForm
             }
         }
 
+        public bool IsButtonOKEnabled
+        {
+            get
+            {
+                return _isButtonOKEnabled;
+            }
+        }
+
+        public bool IsButtonUndoEnabled
+        {
+            get
+            {
+                return _isButtonUndoEnabled;
+            }
+        }
+
+        public bool IsButtonRedoEnabled
+        {
+            get
+            {
+                return _isButtonRedoEnabled;
+            }
+        }
+
+
         public Cursor GetCursor()
         {
             return _cursor;
@@ -104,6 +134,9 @@ namespace MyDrawingForm
             _isProcessChecked = mode == "Process";
             _isDecisionChecked = mode == "Decision";
             _isSelectChecked = mode == "";
+
+            _isButtonUndoEnabled = _model.commandManager.IsUndoEnabled;
+            _isButtonRedoEnabled = _model.commandManager.IsRedoEnabled;
         }
 
         public void SetStartMode()
@@ -129,6 +162,16 @@ namespace MyDrawingForm
         public void SetSelectMode()
         {
             _model.SetSelectMode();
+        }
+
+        public void Undo()
+        {
+            _model.Undo();
+        }
+
+        public void Redo()
+        {
+            _model.Redo();
         }
 
         public void TextBoxTextChanged(string text)
@@ -165,6 +208,30 @@ namespace MyDrawingForm
         {
             _shape = shape;
             CreateBlockChanged();
+        }
+
+        public string InitialText
+        {
+            get { return _initialText; }
+            set
+            {
+                _initialText = value;
+                Notify("InitialText");
+            }
+        }
+
+        public void TextBoxModifyTextChanged(string text)
+        {
+            _modifyText = text;
+            if (_modifyText != "" && _modifyText != _initialText)
+            {
+                _isButtonOKEnabled = true;
+            }
+            else
+            {
+                _isButtonOKEnabled = false;
+            }
+            Notify("IsButtonOKEnabled");
         }
 
         public bool IsShapeValid()

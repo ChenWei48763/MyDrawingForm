@@ -166,5 +166,15 @@ namespace MyDrawingForm
         {
             presentationModel.ComboBoxShapeSelectedIndexChanged(comboBoxShape.SelectedItem.ToString());
         }
+
+        private void ButtonUndo_Click(object sender, EventArgs e)
+        {
+            presentationModel.Undo();
+        }
+
+        private void ButtonRedo_Click(object sender, EventArgs e)
+        {
+            presentationModel.Redo();
+        }
     }
 }

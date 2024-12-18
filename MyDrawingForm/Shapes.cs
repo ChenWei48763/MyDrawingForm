@@ -35,5 +35,17 @@ namespace MyDrawingForm
         {
             shapeList.Add(CreateShape(shape, name, x, y, height, width));
         }
+
+        public void DeleteShape(int id)
+        {
+            for (int i = 0; i < shapeList.Count; i++)
+            {
+                if (shapeList[i].ShapeId == id)
+                {
+                    shapeList.RemoveAt(i);
+                    break;
+                }
+            }
+        }
     }
 }

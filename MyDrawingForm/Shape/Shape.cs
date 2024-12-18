@@ -79,5 +79,10 @@ namespace MyDrawingForm
             float handleY = TextY - handleRadius; // 小點的Y座標在文字框的正上方
             graphics.DrawFilledEllipse(handleX - handleRadius, handleY, handleRadius * 2, handleRadius * 2);
         }
+
+        public void UpdateText(string newText)
+        {
+            Text = newText;
+        }
     }
 }
