@@ -19,7 +19,7 @@ namespace MyDrawingForm
         public delegate void ModelChangedEventHandler();
         private string _mode = "";
 
-        IState pointerState;
+        internal IState pointerState;
         IState drawingState;
         IState drawLineState;
         List<Line> lines = new List<Line>();

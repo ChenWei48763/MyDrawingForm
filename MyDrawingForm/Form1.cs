@@ -12,6 +12,7 @@ namespace MyDrawingForm
     {
         private Model _model;
         private PresentationModel presentationModel;
+        private Shape currentShape;
 
         public Form1(PresentationModel presentationModel)
         {
@@ -27,12 +28,25 @@ namespace MyDrawingForm
             _model.ModelChanged += HandleModelChanged;
             ButtonAdd.DataBindings.Add("Enabled", presentationModel, "IsCreateEnabled");
 
+            ((PointerState)_model.pointerState).OnTextHandleDoubleClick += ShowTextBoxForEditing;
+
             // 啟用雙重緩衝
             this.SetStyle(ControlStyles.DoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
             this.UpdateStyles();
 
             DoubleBuffered = true;
             _model.EnterPointerState();
+        }
+
+        private void ShowTextBoxForEditing(Shape shape)
+        {
+            currentShape = shape;
+            string newText = Prompt.ShowDialog("修改文字", "請輸入新文字", shape.Text);
+            if (!string.IsNullOrEmpty(newText) && newText != shape.Text)
+            {
+                presentationModel.UpdateShapeText(shape, newText);
+                _model.NotifyModelChanged();
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)

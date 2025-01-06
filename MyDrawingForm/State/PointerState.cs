@@ -23,6 +23,8 @@ namespace MyDrawingForm
         private bool _isOnceClickOnTextHandle;
         private bool _isDoubleClickOnTextHandle;
 
+        public event Action<Shape> OnTextHandleDoubleClick;
+
         public void Initialize(Model m)
         {
             // 當進入PointerState時，應該尚未選取任何形狀，因此清空selectedShape
@@ -42,15 +44,7 @@ namespace MyDrawingForm
 
                     if (_isDoubleClickOnTextHandle)
                     {
-                        using (var dialog = new Form2(_shape.Text))
-                        {
-                            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                            {
-                                string newText = dialog.GetTextBoxText();
-                                _m.commandManager.Execute(new TextChangedCommand(_shape, _shape.Text, newText));
-                                _m.NotifyModelChanged();
-                            }
-                        }
+                        OnTextHandleDoubleClick?.Invoke(_shape);
                         _isOnceClickOnTextHandle = false;
                         return;
                     }

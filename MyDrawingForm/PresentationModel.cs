@@ -412,5 +412,12 @@ namespace MyDrawingForm
                 dataGridViewShapes.Rows.Add("刪除", shape.ShapeId, shape.GetType().Name, shape.Text, shape.X, shape.Y, shape.Height, shape.Width);
             }
         }
+        public void UpdateShapeText(Shape shape, string newText)
+        {
+            string oldText = shape.Text;
+            ICommand command = new TextChangedCommand(shape, oldText, newText);
+            _model.commandManager.Execute(command);
+            Notify("ShapeTextUpdated");
+        }
     }
 }
