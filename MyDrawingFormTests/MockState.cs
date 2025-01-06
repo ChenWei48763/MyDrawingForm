@@ -25,19 +25,19 @@ namespace MyDrawingFormTests
             isOnPaintCalled = true;
         }
 
-        public void MouseDown(float x, float y)
+        public void MouseDown(int x, int y)
         {
             MouseDownX = x;
             MouseDownY = y;
         }
 
-        public void MouseMove(float x, float y)
+        public void MouseMove(int x, int y)
         {
             MouseMoveX = x;
             MouseMoveY = y;
         }
 
-        public void MouseUp(float x, float y)
+        public void MouseUp(int x, int y)
         {
             MouseUpX = x;
             MouseUpY = y;

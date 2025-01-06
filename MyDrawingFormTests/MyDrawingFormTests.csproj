@@ -52,6 +52,13 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Command\MockCommand.cs" />
+    <Compile Include="Command\AddCommandTests.cs" />
+    <Compile Include="Command\ConnectorCommandTests.cs" />
+    <Compile Include="Command\DataGridCommandTests.cs" />
+    <Compile Include="Command\MoveCommandTests.cs" />
+    <Compile Include="Command\TextMoveCommandTests.cs" />
+    <Compile Include="Command\TextChangedCommandTests.cs" />
     <Compile Include="MockGraphic.cs" />
     <Compile Include="MockState.cs" />
     <Compile Include="ModelTests.cs" />
@@ -63,8 +70,13 @@
     <Compile Include="Shape\ProcessTests.cs" />
     <Compile Include="Shape\TerminatorTests.cs" />
     <Compile Include="State\DrawingStateTests.cs" />
+    <Compile Include="State\DrawLineStateTests.cs" />
     <Compile Include="State\PointerStateTests.cs" />
     <Compile Include="ShapeFactoryTests.cs" />
+    <Compile Include="LineTests.cs" />
+    <Compile Include="LineHintTests.cs" />
+    <Compile Include="CommandManagerTests.cs" />
+    <Compile Include="ShapesTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MyDrawingForm\MyDrawingForm.csproj">

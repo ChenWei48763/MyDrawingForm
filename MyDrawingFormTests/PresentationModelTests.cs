@@ -5,271 +5,348 @@ using System.ComponentModel;
 using System.Windows;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace MyDrawingForm.Tests
 {
-    [TestClass]
+    [TestClass()]
     public class PresentationModelTests
     {
-        private PresentationModel _presentationModel;
-        private Model _model;
+        private PresentationModel presentationModel;
+        private Model model;
 
         [TestInitialize]
         public void Setup()
         {
-            _model = new Model();
-            _presentationModel = new PresentationModel(_model);
+            model = new Model();
+            presentationModel = new PresentationModel(model);
         }
-
         [TestMethod]
         public void ModelTest()
         {
-            _presentationModel.SetSelectMode();
-            Assert.AreEqual(_presentationModel.model, _model);
+            presentationModel.SetSelectMode();
+            Assert.AreEqual(presentationModel.model, model);
         }
+
+
 
         [TestMethod]
         public void isButtonCheckedTest()
         {
-            _presentationModel.SetStartMode();
-            Assert.IsTrue(_presentationModel.IsStartChecked());
-            _presentationModel.SetTerminatorMode();
-            Assert.IsTrue(_presentationModel.IsTerminatorChecked());
-            _presentationModel.SetProcessMode();
-            Assert.IsTrue(_presentationModel.IsProcessChecked());
-            _presentationModel.SetDecisionMode();
-            Assert.IsTrue(_presentationModel.IsDecisionChecked());
-            _presentationModel.SetSelectMode();
-            Assert.IsTrue(_presentationModel.IsSelectChecked());
-        }
-
-        [TestMethod]
-        public void SetStartModeTest()
-        {
-            _presentationModel.SetStartMode();
-            Assert.AreEqual("Start", _model.GetDrawingMode());
-        }
-
-        [TestMethod]
-        public void SetTerminatorModeTest()
-        {
-            _presentationModel.SetTerminatorMode();
-            Assert.AreEqual("Terminator", _model.GetDrawingMode());
-        }
-
-        [TestMethod]
-        public void SetProcessModeTest()
-        {
-            _presentationModel.SetProcessMode();
-            Assert.AreEqual("Process", _model.GetDrawingMode());
-        }
-
-        [TestMethod]
-        public void SetDecisionModeTest()
-        {
-            _presentationModel.SetDecisionMode();
-            Assert.AreEqual("Decision", _model.GetDrawingMode());
-        }
-
-        [TestMethod]
-        public void SetSelectModeTest()
-        {
-            _presentationModel.SetSelectMode();
-            Assert.AreEqual("", _model.GetDrawingMode());
-        }
-
-        [TestMethod]
-        public void TextBoxTextChangedTest()
-        {
-            _presentationModel.TextBoxTextChanged("Test");
-            Assert.AreEqual(Color.Black, _presentationModel.TextLabelColor);
-            Assert.IsTrue(_presentationModel.IsTextValid());
-
-            _presentationModel.TextBoxTextChanged("");
-            Assert.AreEqual(Color.Red, _presentationModel.TextLabelColor);
-            Assert.IsFalse(_presentationModel.IsTextValid());
-        }
-
-        [TestMethod]
-        public void TextBoxXChangedTest()
-        {
-            _presentationModel.TextBoxXChanged("");
-            Assert.AreEqual(Color.Red, _presentationModel.XLabelColor);
-            Assert.IsFalse(_presentationModel.IsXValid());
-
-            _presentationModel.TextBoxXChanged("10");
-            Assert.AreEqual(Color.Black, _presentationModel.XLabelColor);
-            Assert.IsTrue(_presentationModel.IsXValid());
-
-            _presentationModel.TextBoxXChanged("abc");
-            Assert.AreEqual(Color.Red, _presentationModel.XLabelColor);
-            Assert.IsFalse(_presentationModel.IsXValid());
-        }
-
-        [TestMethod]
-        public void TextBoxYChangedTest()
-        {
-            _presentationModel.TextBoxYChanged("");
-            Assert.AreEqual(Color.Red, _presentationModel.YLabelColor);
-            Assert.IsFalse(_presentationModel.IsYValid());
-
-            _presentationModel.TextBoxYChanged("20");
-            Assert.AreEqual(Color.Black, _presentationModel.YLabelColor);
-            Assert.IsTrue(_presentationModel.IsYValid());
-
-            _presentationModel.TextBoxYChanged("abc");
-            Assert.AreEqual(Color.Red, _presentationModel.YLabelColor);
-            Assert.IsFalse(_presentationModel.IsYValid());
-        }
-
-        [TestMethod]
-        public void TextBoxHeightChangedTest()
-        {
-            _presentationModel.TextBoxHeightChanged("");
-            Assert.AreEqual(Color.Red, _presentationModel.HeightLabelColor);
-            Assert.IsFalse(_presentationModel.IsHeightValid());
-
-            _presentationModel.TextBoxHeightChanged("30");
-            Assert.AreEqual(Color.Black, _presentationModel.HeightLabelColor);
-            Assert.IsTrue(_presentationModel.IsHeightValid());
-
-            _presentationModel.TextBoxHeightChanged("abc");            
-            Assert.AreEqual(Color.Red, _presentationModel.HeightLabelColor);
-            Assert.IsFalse(_presentationModel.IsHeightValid());
+            presentationModel.SetStartMode();
+            Assert.IsTrue(presentationModel.IsStartChecked());
+            presentationModel.SetTerminatorMode();
+            Assert.IsTrue(presentationModel.IsTerminatorChecked());
+            presentationModel.SetProcessMode();
+            Assert.IsTrue(presentationModel.IsProcessChecked());
+            presentationModel.SetDecisionMode();
+            Assert.IsTrue(presentationModel.IsDecisionChecked());
+            presentationModel.SetSelectMode();
+            Assert.IsTrue(presentationModel.IsSelectChecked());
 
         }
 
-        [TestMethod]
-        public void TextBoxWidthChangedTest()
-        {
-            _presentationModel.TextBoxWidthChanged("");
-            Assert.AreEqual(Color.Red, _presentationModel.WidthLabelColor);
-            Assert.IsFalse(_presentationModel.IsWidthValid());
-
-            _presentationModel.TextBoxWidthChanged("40");
-            Assert.AreEqual(Color.Black, _presentationModel.WidthLabelColor);
-            Assert.IsTrue(_presentationModel.IsWidthValid());
-
-            _presentationModel.TextBoxWidthChanged("abc");
-            Assert.AreEqual(Color.Red, _presentationModel.WidthLabelColor);
-            Assert.IsFalse(_presentationModel.IsWidthValid());
-        }
-
-        [TestMethod]
-        public void ComboBoxShapeSelectedIndexChangedTest()
-        {
-            _presentationModel.ComboBoxShapeSelectedIndexChanged("test");
-            Assert.IsFalse(_presentationModel.IsShapeValid());
-            _presentationModel.ComboBoxShapeSelectedIndexChanged("Start");
-            Assert.IsTrue(_presentationModel.IsShapeValid());
-            _presentationModel.ComboBoxShapeSelectedIndexChanged("Process");
-            Assert.IsTrue(_presentationModel.IsShapeValid());
-            _presentationModel.ComboBoxShapeSelectedIndexChanged("Decision");
-            Assert.IsTrue(_presentationModel.IsShapeValid());
-            _presentationModel.ComboBoxShapeSelectedIndexChanged("Terminator");
-            Assert.IsTrue(_presentationModel.IsShapeValid());
-        }
-
-        [TestMethod]
-        public void CreateBlockChangedTest()
-        {
-            // 設置有效的輸入
-            _presentationModel.TextBoxTextChanged("Test");
-            _presentationModel.TextBoxXChanged("10");
-            _presentationModel.TextBoxYChanged("20");
-            _presentationModel.TextBoxHeightChanged("30");
-            _presentationModel.TextBoxWidthChanged("40");
-            _presentationModel.ComboBoxShapeSelectedIndexChanged("Process");
-
-            _presentationModel.CreateBlockChanged();
-            Assert.IsTrue(_presentationModel.IsCreateEnabled);
-
-            // 設置無效的輸入
-            _presentationModel.TextBoxTextChanged("");
-            _presentationModel.CreateBlockChanged();
-            Assert.IsFalse(_presentationModel.IsCreateEnabled);
-
-            _presentationModel.TextBoxTextChanged("Test");
-            _presentationModel.TextBoxXChanged("-10");
-            _presentationModel.CreateBlockChanged();
-            Assert.IsFalse(_presentationModel.IsCreateEnabled);
-
-            _presentationModel.TextBoxXChanged("10");
-            _presentationModel.TextBoxYChanged("-20");
-            _presentationModel.CreateBlockChanged();
-            Assert.IsFalse(_presentationModel.IsCreateEnabled);
-
-            _presentationModel.TextBoxYChanged("20");
-            _presentationModel.TextBoxHeightChanged("0");
-            _presentationModel.CreateBlockChanged();
-            Assert.IsFalse(_presentationModel.IsCreateEnabled);
-
-            _presentationModel.TextBoxHeightChanged("30");
-            _presentationModel.TextBoxWidthChanged("0");
-            _presentationModel.CreateBlockChanged();
-            Assert.IsFalse(_presentationModel.IsCreateEnabled);
-
-            _presentationModel.TextBoxWidthChanged("40");
-            _presentationModel.ComboBoxShapeSelectedIndexChanged("InvalidShape");
-            _presentationModel.CreateBlockChanged();
-            Assert.IsFalse(_presentationModel.IsCreateEnabled);
-        }
-
-        [TestMethod]
-        public void AddShapeTest()
-        {
-            _presentationModel.TextBoxTextChanged("Test");
-            _presentationModel.TextBoxXChanged("10");
-            _presentationModel.TextBoxYChanged("20");
-            _presentationModel.TextBoxHeightChanged("30");
-            _presentationModel.TextBoxWidthChanged("40");
-            _presentationModel.ComboBoxShapeSelectedIndexChanged("Process");
-
-            _presentationModel.AddShape();
-            var shapes = _model.GetShapes();
-            Assert.AreEqual(1, shapes.Count);
-            Assert.AreEqual("Process", shapes[0].ShapeName);
-        }
-
-        [TestMethod]
+        [TestMethod()]
         public void UpdateStateTest()
         {
-            _presentationModel.SetStartMode();
-            _presentationModel.UpdateState();
-            Assert.IsTrue(_presentationModel.IsStartChecked());
-            _presentationModel.SetSelectMode();
-            _presentationModel.UpdateState();
-            Assert.IsTrue(_presentationModel.IsSelectChecked());
+            model.SetDrawingMode("Process");
+            presentationModel.UpdateState();
+            Assert.AreEqual(Cursors.Cross, presentationModel.GetCursor());
+            Assert.IsTrue(presentationModel.IsProcessChecked());
+            Assert.IsFalse(presentationModel.IsStartChecked());
+            Assert.IsFalse(presentationModel.IsTerminatorChecked());
+            Assert.IsFalse(presentationModel.IsDecisionChecked());
+            Assert.IsFalse(presentationModel.IsSelectChecked());
+            Assert.IsFalse(presentationModel.IsLineChecked());
         }
 
-        [TestMethod]
+        [TestMethod()]
+        public void IsCreateEnabledTest()
+        {
+            presentationModel.ComboBoxShapeSelectedIndexChanged("Process");
+            presentationModel.TextBoxTextChanged("Test");
+            presentationModel.TextBoxXChanged("10");
+            presentationModel.TextBoxYChanged("20");
+            presentationModel.TextBoxHeightChanged("30");
+            presentationModel.TextBoxWidthChanged("40");
+            Assert.IsTrue(presentationModel.IsCreateEnabled);
+
+            presentationModel.TextBoxTextChanged("");
+            Assert.IsFalse(presentationModel.IsCreateEnabled);
+        }
+
+        [TestMethod()]
+        public void IsButtonOKEnabledTest()
+        {
+            presentationModel.InitialText = "Initial Text";
+            presentationModel.TextBoxModifyTextChanged("Modified Text");
+            Assert.IsTrue(presentationModel.IsButtonOKEnabled);
+
+            presentationModel.TextBoxModifyTextChanged("Initial Text");
+            Assert.IsFalse(presentationModel.IsButtonOKEnabled);
+        }
+
+        [TestMethod()]
+        public void IsUndoEnabledTest()
+        {
+            Shape shape = new Process(1, "Test", 10, 20, 30, 40);
+            model.AddShapeFromDataGrid(shape);
+            Assert.IsTrue(presentationModel.IsUndoEnabled);
+            presentationModel.Undo();
+            Assert.IsFalse(presentationModel.IsUndoEnabled);
+        }
+
+        [TestMethod()]
+        public void IsRedoEnabledTest()
+        {
+            Shape shape = new Process(1, "Test", 10, 20, 30, 40);
+            model.AddShapeFromDataGrid(shape);
+            presentationModel.Undo();
+            Assert.IsTrue(presentationModel.IsRedoEnabled);
+            presentationModel.Redo();
+            Assert.IsFalse(presentationModel.IsRedoEnabled);
+        }
+
+        [TestMethod()]
+        public void SetStartModeTest()
+        {
+            presentationModel.SetStartMode();
+            Assert.AreEqual("Start", model.GetDrawingMode());
+        }
+
+        [TestMethod()]
+        public void SetTerminatorModeTest()
+        {
+            presentationModel.SetTerminatorMode();
+            Assert.AreEqual("Terminator", model.GetDrawingMode());
+        }
+
+        [TestMethod()]
+        public void SetProcessModeTest()
+        {
+            presentationModel.SetProcessMode();
+            Assert.AreEqual("Process", model.GetDrawingMode());
+        }
+
+        [TestMethod()]
+        public void SetDecisionModeTest()
+        {
+            presentationModel.SetDecisionMode();
+            Assert.AreEqual("Decision", model.GetDrawingMode());
+        }
+
+        [TestMethod()]
+        public void SetSelectModeTest()
+        {
+            presentationModel.SetSelectMode();
+            Assert.AreEqual("", model.GetDrawingMode());
+        }
+
+        [TestMethod()]
+        public void SetDrawLineModeTest()
+        {
+            presentationModel.SetDrawLineMode();
+            Assert.AreEqual("", model.GetDrawingMode());
+        }
+
+        [TestMethod()]
+        public void UndoTest()
+        {
+            Shape shape = new Process(1, "Test", 10, 20, 30, 40);
+            model.AddShapeFromDataGrid(shape);
+            Assert.AreEqual(1, model.GetShapes().Count);
+            presentationModel.Undo();
+            Assert.AreEqual(0, model.GetShapes().Count);
+        }
+
+        [TestMethod()]
+        public void RedoTest()
+        {
+            Shape shape = new Process(1, "Test", 10, 20, 30, 40);
+            model.AddShapeFromDataGrid(shape);
+            Assert.AreEqual(1, model.GetShapes().Count);
+            presentationModel.Undo();
+            presentationModel.Redo();
+            Assert.AreEqual(1, model.GetShapes().Count);
+        }
+
+        [TestMethod()]
+        public void TextBoxTextChangedTest()
+        {
+            presentationModel.TextBoxTextChanged("Test");
+            Assert.AreEqual(Color.Black, presentationModel.TextLabelColor);
+            Assert.IsTrue(presentationModel.IsTextValid());
+
+            presentationModel.TextBoxTextChanged("");
+            Assert.AreEqual(Color.Red, presentationModel.TextLabelColor);
+            Assert.IsFalse(presentationModel.IsTextValid());
+        }
+
+        [TestMethod()]
+        public void TextBoxXChangedTest()
+        {
+            presentationModel.TextBoxXChanged("");
+            Assert.AreEqual(Color.Red, presentationModel.XLabelColor);
+            Assert.IsFalse(presentationModel.IsXValid());
+
+            presentationModel.TextBoxXChanged("10");
+            Assert.AreEqual(Color.Black, presentationModel.XLabelColor);
+            Assert.IsTrue(presentationModel.IsXValid());
+
+            presentationModel.TextBoxXChanged("abc");
+            Assert.AreEqual(Color.Red, presentationModel.XLabelColor);
+            Assert.IsFalse(presentationModel.IsXValid());
+        }
+
+        [TestMethod()]
+        public void TextBoxYChangedTest()
+        {
+            presentationModel.TextBoxYChanged("200");
+            Assert.AreEqual("200", presentationModel.GetType().GetField("_y", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(presentationModel));
+        }
+
+        [TestMethod()]
+        public void TextBoxHeightChangedTest()
+        {
+            presentationModel.TextBoxYChanged("");
+            Assert.AreEqual(Color.Red, presentationModel.YLabelColor);
+            Assert.IsFalse(presentationModel.IsYValid());
+
+            presentationModel.TextBoxYChanged("20");
+            Assert.AreEqual(Color.Black, presentationModel.YLabelColor);
+            Assert.IsTrue(presentationModel.IsYValid());
+
+            presentationModel.TextBoxYChanged("abc");
+            Assert.AreEqual(Color.Red, presentationModel.YLabelColor);
+            Assert.IsFalse(presentationModel.IsYValid());
+        }
+
+        [TestMethod()]
+        public void TextBoxWidthChangedTest()
+        {
+            presentationModel.TextBoxWidthChanged("400");
+            Assert.AreEqual("400", presentationModel.GetType().GetField("_width", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(presentationModel));
+        }
+
+        [TestMethod()]
+        public void ComboBoxShapeSelectedIndexChangedTest()
+        {
+            presentationModel.TextBoxHeightChanged("");
+            Assert.AreEqual(Color.Red, presentationModel.HeightLabelColor);
+            Assert.IsFalse(presentationModel.IsHeightValid());
+
+            presentationModel.TextBoxHeightChanged("30");
+            Assert.AreEqual(Color.Black, presentationModel.HeightLabelColor);
+            Assert.IsTrue(presentationModel.IsHeightValid());
+
+            presentationModel.TextBoxHeightChanged("abc");
+            Assert.AreEqual(Color.Red, presentationModel.HeightLabelColor);
+            Assert.IsFalse(presentationModel.IsHeightValid());
+        }
+
+        [TestMethod()]
+        public void TextBoxModifyTextChangedTest()
+        {
+            presentationModel.TextBoxWidthChanged("");
+            Assert.AreEqual(Color.Red, presentationModel.WidthLabelColor);
+            Assert.IsFalse(presentationModel.IsWidthValid());
+
+            presentationModel.TextBoxWidthChanged("40");
+            Assert.AreEqual(Color.Black, presentationModel.WidthLabelColor);
+            Assert.IsTrue(presentationModel.IsWidthValid());
+
+            presentationModel.TextBoxWidthChanged("abc");
+            Assert.AreEqual(Color.Red, presentationModel.WidthLabelColor);
+            Assert.IsFalse(presentationModel.IsWidthValid());
+
+            presentationModel.InitialText = "Initial Text";
+            presentationModel.TextBoxModifyTextChanged("Initial Text");
+            Assert.AreEqual(Color.Red, presentationModel.WidthLabelColor);
+            Assert.IsFalse(presentationModel.IsWidthValid());
+        }
+
+        [TestMethod()]
+        public void AddShapeTest()
+        {
+            presentationModel.ComboBoxShapeSelectedIndexChanged("Process");
+            presentationModel.TextBoxTextChanged("Test");
+            presentationModel.TextBoxXChanged("10");
+            presentationModel.TextBoxYChanged("20");
+            presentationModel.TextBoxHeightChanged("30");
+            presentationModel.TextBoxWidthChanged("40");
+            presentationModel.AddShape();
+            Assert.AreEqual(model.GetShapes().Count, 1);
+        }
+
+        [TestMethod()]
+        public void UpdateShapeListTest()
+        {
+            Shape shape = new Process(1, "Test", 10, 20, 30, 40);
+            model.AddShapeFromDataGrid(shape);
+            DataGridView dataGridViewShapes = new DataGridView();
+            dataGridViewShapes.Columns.Add("Action", "Action");
+            dataGridViewShapes.Columns.Add("ShapeId", "ShapeId");
+            dataGridViewShapes.Columns.Add("ShapeType", "ShapeType");
+            dataGridViewShapes.Columns.Add("Text", "Text");
+            dataGridViewShapes.Columns.Add("X", "X");
+            dataGridViewShapes.Columns.Add("Y", "Y");
+            dataGridViewShapes.Columns.Add("Height", "Height");
+            dataGridViewShapes.Columns.Add("Width", "Width");
+
+            presentationModel.UpdateShapeList(dataGridViewShapes);
+
+            Assert.AreEqual(2, dataGridViewShapes.Rows.Count);
+            Assert.AreEqual("刪除", dataGridViewShapes.Rows[0].Cells[0].Value);
+            Assert.AreEqual(shape.ShapeId, dataGridViewShapes.Rows[0].Cells[1].Value);
+            Assert.AreEqual(shape.GetType().Name, dataGridViewShapes.Rows[0].Cells[2].Value);
+            Assert.AreEqual(shape.Text, dataGridViewShapes.Rows[0].Cells[3].Value);
+            Assert.AreEqual(shape.X, dataGridViewShapes.Rows[0].Cells[4].Value);
+            Assert.AreEqual(shape.Y, dataGridViewShapes.Rows[0].Cells[5].Value);
+            Assert.AreEqual(shape.Height, dataGridViewShapes.Rows[0].Cells[6].Value);
+            Assert.AreEqual(shape.Width, dataGridViewShapes.Rows[0].Cells[7].Value);
+        }
+
+        [TestMethod()]
         public void NotifyTest()
         {
             bool eventFired = false;
-            _presentationModel.PropertyChanged += (sender, e) =>
+            presentationModel.PropertyChanged += (sender, e) =>
             {
-                if (e.PropertyName == "IsCreateEnabled")
+                if (e.PropertyName == "TestProperty")
                 {
                     eventFired = true;
                 }
             };
 
-            _presentationModel.TextBoxTextChanged("Test");
+            presentationModel.Notify("TestProperty");
+
             Assert.IsTrue(eventFired);
         }
 
-        [TestMethod]
-        public void GetCursorTest()
+        [TestMethod()]
+        public void InitialTextTest()
         {
-            // 設置為 Start 模式後應為 Cross
-            _presentationModel.SetStartMode();
-            _presentationModel.UpdateState();
-            Assert.AreEqual(Cursors.Cross, _presentationModel.GetCursor());
+            presentationModel.InitialText = "Initial Text";
+            Assert.AreEqual("Initial Text", presentationModel.InitialText);
+        }
 
-            // 設置為 Select 模式後應為 Default
-            _presentationModel.SetSelectMode();
-            _presentationModel.UpdateState();
-            Assert.AreEqual(Cursors.Default, _presentationModel.GetCursor());
+        [TestMethod()]
+        public void IsShapeValidTest()
+        {
+            presentationModel.ComboBoxShapeSelectedIndexChanged("Start");
+            Assert.IsTrue(presentationModel.IsShapeValid());
+
+            presentationModel.ComboBoxShapeSelectedIndexChanged("Terminator");
+            Assert.IsTrue(presentationModel.IsShapeValid());
+
+            presentationModel.ComboBoxShapeSelectedIndexChanged("Process");
+            Assert.IsTrue(presentationModel.IsShapeValid());
+
+            presentationModel.ComboBoxShapeSelectedIndexChanged("Decision");
+            Assert.IsTrue(presentationModel.IsShapeValid());
+
+            presentationModel.ComboBoxShapeSelectedIndexChanged("InvalidShape");
+            Assert.IsFalse(presentationModel.IsShapeValid());
         }
     }
 }

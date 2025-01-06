@@ -19,5 +19,6 @@ namespace MyDrawingForm
         void DrawBoundingBox(float x, float y, float height, float width);
         void DrawTextBoundingBox(float x, float y, float height, float width);
         void DrawFilledEllipse(float x, float y, float height, float width);
+        void DrawDot(int x, int y, int height, int width);
     }
 }

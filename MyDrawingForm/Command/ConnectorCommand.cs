@@ -6,25 +6,25 @@ using System.Threading.Tasks;
 
 namespace MyDrawingForm
 {
-    public class AddCommand : ICommand
+    public class ConnectorCommand : ICommand
     {
-        Model model;
-        Shape shape;
+        Model _m;
+        Line _line;
 
-        public AddCommand(Model m, Shape s)
+        public ConnectorCommand(Model m, Line line)
         {
-            model = m;
-            shape = s;
+            _m = m;
+            _line = line;
         }
 
         public void Execute()
         {
-            model.AddShape(shape);
+            _m.AddLine(_line);
         }
 
         public void UnExecute()
         {
-            model.RemoveShape(shape);
+            _m.RemoveLine(_line);
         }
     }
 }

@@ -10,7 +10,6 @@ namespace MyDrawingForm
 {
     public partial class Form1 : Form
     {
-        private List<Shape> shapeList = new List<Shape>();
         private Model _model;
         private PresentationModel presentationModel;
 
@@ -28,6 +27,10 @@ namespace MyDrawingForm
             _model.ModelChanged += HandleModelChanged;
             ButtonAdd.DataBindings.Add("Enabled", presentationModel, "IsCreateEnabled");
 
+            // 啟用雙重緩衝
+            this.SetStyle(ControlStyles.DoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
+            this.UpdateStyles();
+
             DoubleBuffered = true;
             _model.EnterPointerState();
         }
@@ -43,9 +46,10 @@ namespace MyDrawingForm
 
         private void dataGridViewShapes_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == 0 && e.RowIndex >= 0 && e.RowIndex < shapeList.Count)
+            if (e.ColumnIndex == 0 && e.RowIndex >= 0)
             {
-                shapeList.RemoveAt(e.RowIndex);
+                Shape shape = _model.GetShapes()[e.RowIndex];
+                _model.RemoveShapeFromDataGrid(shape);
                 HandleModelChanged();
             }
         }
@@ -54,7 +58,7 @@ namespace MyDrawingForm
         {
             UpdateButtonStates();
             UpdateCursor();
-            UpdateShapeList();
+            _model.UpdateShapeList(dataGridViewShapes);
         }
 
         private void UpdateButtonStates()
@@ -64,21 +68,15 @@ namespace MyDrawingForm
             ButtonProcess.Checked = presentationModel.IsProcessChecked();
             ButtonDecision.Checked = presentationModel.IsDecisionChecked();
             ButtonSelect.Checked = presentationModel.IsSelectChecked();
+            ButtonLine.Checked = presentationModel.IsLineChecked();
+
+            ButtonUndo.Enabled = presentationModel.IsUndoEnabled;
+            ButtonRedo.Enabled = presentationModel.IsRedoEnabled;
         }
 
         private void UpdateCursor()
         {
             drawPanel.Cursor = presentationModel.GetCursor();
-        }
-
-        private void UpdateShapeList()
-        {
-            dataGridViewShapes.Rows.Clear();
-            shapeList = _model.GetShapes();
-            foreach (Shape shape in shapeList)
-            {
-                dataGridViewShapes.Rows.Add("刪除", shape.ShapeId, shape.GetType().Name, shape.Text, shape.X, shape.Y, shape.Height, shape.Width);
-            }
         }
 
         public void HandleCanvasPointerPressed(object sender, MouseEventArgs e)
@@ -130,6 +128,11 @@ namespace MyDrawingForm
         private void ButtonSelect_Click(object sender, EventArgs e)
         {
             presentationModel.SetSelectMode();
+        }
+
+        private void ButtonLine_Click(object sender, EventArgs e)
+        {
+            presentationModel.SetDrawLineMode();
         }
 
         private void TextBoxText_Changed(object sender, EventArgs e)

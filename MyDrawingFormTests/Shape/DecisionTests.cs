@@ -35,5 +35,26 @@ namespace MyDrawingForm.Tests
             Assert.AreEqual(true, shape.IsPointInShape(20, 30));
             Assert.AreEqual(false, shape.IsPointInShape(10, 10));
         }
+
+        [TestMethod()]
+        public void GetConnectorNumberTest()
+        {
+            Shape shape = new Decision(1, "test", 10, 20, 30, 40);
+
+            int connectorNumber = shape.GetConnectorNumber(30, 20);
+            Assert.AreEqual(1, connectorNumber);
+
+            connectorNumber = shape.GetConnectorNumber(10, 35);
+            Assert.AreEqual(2, connectorNumber);
+
+            connectorNumber = shape.GetConnectorNumber(30, 50);
+            Assert.AreEqual(3, connectorNumber);
+
+            connectorNumber = shape.GetConnectorNumber(50, 35);
+            Assert.AreEqual(4, connectorNumber);
+
+            connectorNumber = shape.GetConnectorNumber(5, 5);
+            Assert.AreEqual(-1, connectorNumber);
+        }
     }
 }

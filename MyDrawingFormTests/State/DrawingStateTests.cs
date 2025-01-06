@@ -27,14 +27,12 @@ namespace MyDrawingForm.Tests
             _model.SetDrawingMode("Process");
             _drawingState.MouseDown(10, 20);
 
-            // 檢查 Model 的狀態
             var shapes = _model.GetShapes();
-            Assert.AreEqual(0, shapes.Count); // MouseDown 不應該添加形狀
+            Assert.AreEqual(0, shapes.Count);
 
-            // 無效座標測試
             _drawingState.MouseDown(-10, -20);
             shapes = _model.GetShapes();
-            Assert.AreEqual(0, shapes.Count); // MouseDown 不應該添加形狀
+            Assert.AreEqual(0, shapes.Count);
         }
 
         [TestMethod]
@@ -42,19 +40,19 @@ namespace MyDrawingForm.Tests
         {
             _model.SetDrawingMode("Process");
             _drawingState.MouseDown(10, 20);
-            _drawingState.MouseMove(30, 40);
+            _drawingState.MouseMove(5, 15);
 
-            // 檢查 Model 的狀態
             var shapes = _model.GetShapes();
-            Assert.AreEqual(0, shapes.Count); // MouseMove 不應該添加形狀
+            Assert.AreEqual(0, shapes.Count);
 
-            // 測試 _isPressed 為 false 的情況
-            _drawingState.MouseUp(30, 40);
-            _drawingState.MouseMove(50, 60);
+            _drawingState.MouseUp(5, 15);
             shapes = _model.GetShapes();
             Assert.AreEqual(1, shapes.Count);
+            Assert.AreEqual(5, shapes[0].X);
+            Assert.AreEqual(15, shapes[0].Y);
+            Assert.AreEqual(5, shapes[0].Width);
+            Assert.AreEqual(5, shapes[0].Height);
 
-            // 測試 _previewShape 為 null 的情況
             _drawingState = new DrawingState(_pointerState);
             _drawingState.Initialize(_model);
             _drawingState.MouseMove(30, 40);
@@ -70,7 +68,6 @@ namespace MyDrawingForm.Tests
             _drawingState.MouseMove(30, 40);
             _drawingState.MouseUp(30, 40);
 
-            // 檢查 Model 的狀態
             var shapes = _model.GetShapes();
             Assert.AreEqual(1, shapes.Count);
             Assert.AreEqual(10, shapes[0].X);
@@ -78,10 +75,9 @@ namespace MyDrawingForm.Tests
             Assert.AreEqual(20, shapes[0].Width);
             Assert.AreEqual(20, shapes[0].Height);
 
-            // 無效狀態測試
             _drawingState.MouseUp(30, 40);
             shapes = _model.GetShapes();
-            Assert.AreEqual(1, shapes.Count); // 應該還是只有一個形狀
+            Assert.AreEqual(1, shapes.Count);
         }
 
         [TestMethod]
@@ -91,14 +87,15 @@ namespace MyDrawingForm.Tests
             _model.SetDrawingMode("Start");
             _drawingState.MouseDown(10, 20);
             _drawingState.MouseMove(30, 40);
-            _drawingState.OnPaint(graphicsMock); // 測試 _isPressed 為 true 的情況
+            _drawingState.OnPaint(graphicsMock);
             _drawingState.MouseUp(30, 40);
-            _drawingState.OnPaint(graphicsMock); // 測試 _isPressed 為 false 的情況
+            _drawingState.OnPaint(graphicsMock);
 
-            _model.AddShape("Start", "test", 10, 20, 20, 20);
-            _model.AddShape("Terminator", "test", 10, 20, 20, 20);
-            _model.AddShape("Process", "test", 10, 20, 20, 20);
-            _model.AddShape("Decision", "test", 10, 20, 20, 20);
+            _model.AddShape(new Start(1, "test", 10, 20, 20, 20));
+            _model.AddShape(new Terminator(2, "test", 10, 20, 20, 20));
+            _model.AddShape(new Process(3, "test", 10, 20, 20, 20));
+            _model.AddShape(new Decision(4, "test", 10, 20, 20, 20));
+            _model.AddLine(new Line(new Process(1, "from", 10, 20, 30, 40), new Process(2, "to", 50, 60, 70, 80), 1, 2));
             _drawingState.OnPaint(graphicsMock);
         }
 

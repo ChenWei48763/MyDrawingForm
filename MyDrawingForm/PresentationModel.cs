@@ -21,8 +21,9 @@ namespace MyDrawingForm
         private bool _isSelectChecked;
         private bool _isCreateEnabled;
         private bool _isButtonOKEnabled;
-        private bool _isButtonUndoEnabled;
-        private bool _isButtonRedoEnabled;
+        private bool _isUndoEnabled = false;
+        private bool _isRedoEnabled = false;
+        private bool _isLineChecked;
         private Cursor _cursor;
         private string _shape;
         private string _text;
@@ -47,7 +48,7 @@ namespace MyDrawingForm
             _model.ModelChanged += UpdateState;
         }
 
-        private void Notify(string propertyName)
+        public void Notify(string propertyName)
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
@@ -78,6 +79,11 @@ namespace MyDrawingForm
             return _isSelectChecked;
         }
 
+        public bool IsLineChecked()
+        {
+            return _isLineChecked;
+        }
+
         public bool IsCreateEnabled
         {
             get
@@ -94,19 +100,19 @@ namespace MyDrawingForm
             }
         }
 
-        public bool IsButtonUndoEnabled
+        public bool IsUndoEnabled
         {
             get
             {
-                return _isButtonUndoEnabled;
+                return _isUndoEnabled;
             }
         }
 
-        public bool IsButtonRedoEnabled
+        public bool IsRedoEnabled
         {
             get
             {
-                return _isButtonRedoEnabled;
+                return _isRedoEnabled;
             }
         }
 
@@ -133,10 +139,11 @@ namespace MyDrawingForm
             _isTerminatorChecked = mode == "Terminator";
             _isProcessChecked = mode == "Process";
             _isDecisionChecked = mode == "Decision";
+            _isLineChecked = mode == "Line";
             _isSelectChecked = mode == "";
 
-            _isButtonUndoEnabled = _model.commandManager.IsUndoEnabled;
-            _isButtonRedoEnabled = _model.commandManager.IsRedoEnabled;
+            _isUndoEnabled = _model.commandManager.IsUndoEnabled;
+            _isRedoEnabled = _model.commandManager.IsRedoEnabled;
         }
 
         public void SetStartMode()
@@ -162,6 +169,11 @@ namespace MyDrawingForm
         public void SetSelectMode()
         {
             _model.SetSelectMode();
+        }
+
+        public void SetDrawLineMode()
+        {
+            _model.SetDrawLineMode();
         }
 
         public void Undo()
@@ -387,7 +399,18 @@ namespace MyDrawingForm
 
         public void AddShape()
         {
-            _model.AddShape(_shape, _text, Convert.ToInt32(_x), Convert.ToInt32(_y), Convert.ToInt32(_width), Convert.ToInt32(_height));
+            Shape s = _model.GetShape(_shape, _text, Convert.ToInt32(_x), Convert.ToInt32(_y), Convert.ToInt32(_height), Convert.ToInt32(_width));
+            _model.AddShapeFromDataGrid(s);
+        }
+
+        public void UpdateShapeList(DataGridView dataGridViewShapes)
+        {
+            dataGridViewShapes.Rows.Clear();
+            var shapeList = _model.GetShapes();
+            foreach (Shape shape in shapeList)
+            {
+                dataGridViewShapes.Rows.Add("刪除", shape.ShapeId, shape.GetType().Name, shape.Text, shape.X, shape.Y, shape.Height, shape.Width);
+            }
         }
     }
 }

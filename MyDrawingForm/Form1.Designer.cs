@@ -399,6 +399,7 @@
             this.ButtonLine.Size = new System.Drawing.Size(23, 22);
             this.ButtonLine.Text = "toolStripButton1";
             this.ButtonLine.ToolTipText = "Line";
+            this.ButtonLine.Click += new System.EventHandler(this.ButtonLine_Click);
             // 
             // ButtonSelect
             // 

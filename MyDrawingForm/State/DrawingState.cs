@@ -14,8 +14,8 @@ namespace MyDrawingForm
         Shape _previewShape;
         PointerState _pointerState;
         private static Random random = new Random();
-        private float _firstPointX;
-        private float _firstPointY;
+        private int _firstPointX;
+        private int _firstPointY;
         private bool _isPressed;
         private const string CHAR_SET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
@@ -31,7 +31,7 @@ namespace MyDrawingForm
             _previewShape = null;
         }
 
-        public void MouseDown(float x, float y)
+        public void MouseDown(int x, int y)
         {
             if (x > 0 && y > 0)
             {
@@ -39,20 +39,42 @@ namespace MyDrawingForm
                 _firstPointY = y;
                 _isPressed = true;
             }
-            _previewShape = _m.shapes.CreateShape(_m.GetDrawingMode(), "", x, y, 0, 0);
+            _previewShape = _m.GetShape(_m.GetDrawingMode(), "", x, y, 0, 0);
         }
 
-        public void MouseMove(float x, float y)
+        public void MouseMove(int x, int y)
         {
             if (_isPressed && _previewShape != null)
             {
-                _previewShape.Width = x - _firstPointX;
-                _previewShape.Height = y - _firstPointY;
+                int newWidth = x - _firstPointX;
+                int newHeight = y - _firstPointY;
+
+                if (newWidth < 0)
+                {
+                    _previewShape.X = x;
+                    _previewShape.Width = -newWidth;
+                }
+                else
+                {
+                    _previewShape.X = _firstPointX;
+                    _previewShape.Width = newWidth;
+                }
+
+                if (newHeight < 0)
+                {
+                    _previewShape.Y = y;
+                    _previewShape.Height = -newHeight;
+                }
+                else
+                {
+                    _previewShape.Y = _firstPointY;
+                    _previewShape.Height = newHeight;
+                }
                 _m.NotifyModelChanged();
             }
         }
 
-        public void MouseUp(float x, float y)
+        public void MouseUp(int x, int y)
         {
             _isPressed = false;
             if (_previewShape == null)
@@ -65,10 +87,9 @@ namespace MyDrawingForm
                 _previewShape.TextX = _previewShape.X + _previewShape.Width / 3;
                 _previewShape.TextY = _previewShape.Y + _previewShape.Height / 3;
                 _previewShape.Text = GenerateRandomText(8);
-                //_m.AddShape(_m.GetDrawingMode(), GenerateRandomText(8), _previewShape.X, _previewShape.Y, _previewShape.Height, _previewShape.Width);
                 _m.commandManager.Execute(new AddCommand(_m, _previewShape));
                 _m.EnterPointerState();
-                _pointerState.AddSelectedShape(_previewShape);
+                _pointerState.selectedShape = _previewShape;
                 _previewShape = null;
                 _m.NotifyModelChanged();
             }
@@ -80,7 +101,11 @@ namespace MyDrawingForm
             {
                 shape.Draw(graphics);
             }
-            if (_isPressed)
+            foreach (Line line in _m.GetLines())
+            {
+                line.Draw(graphics);
+            }
+            if (_isPressed && _previewShape != null)
             {
                 _previewShape.Draw(graphics);
             }

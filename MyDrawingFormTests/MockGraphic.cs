@@ -45,6 +45,10 @@ namespace MyDrawingFormTests
         public void DrawFilledEllipse(float x, float y, float height, float width)
         {
         }
+        public void DrawDot(int x, int y, int height, int width)
+        {
+
+        }
     }
 }
 

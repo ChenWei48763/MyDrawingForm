@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace MyDrawingForm
     internal class Shapes
     {
         public List<Shape> shapeList = new List<Shape>();
+        public List<Line> lineList = new List<Line>();
         private static readonly ShapeFactory shapeFactory = new ShapeFactory();
 
         public List<Shape> GetShapes()
@@ -18,7 +20,12 @@ namespace MyDrawingForm
             return shapeList;
         }
 
-        public Shape CreateShape(string shapeName, string text, float x, float y, float height, float width)
+        public List<Line> GetLines()
+        {
+            return lineList;
+        }
+
+        public Shape GetNewShape(string shape, string name, int x, int y, int height, int width)
         {
             int id;
             if (shapeList.Count == 0)
@@ -27,25 +34,19 @@ namespace MyDrawingForm
             }
             else
             {
-                id = shapeList[shapeList.Count - 1].ShapeId + 1;
+                id = shapeList.Last().ShapeId + 1;
             }
-            return shapeFactory.Create(shapeName, id, text, x, y, height, width);
-        }
-        public void AddNewShape(string shape, string name, float x, float y, float height, float width)
-        {
-            shapeList.Add(CreateShape(shape, name, x, y, height, width));
+            return shapeFactory.Create(shape, id, name, x, y, height, width);
         }
 
-        public void DeleteShape(int id)
+        public void AddShape(Shape s)
         {
-            for (int i = 0; i < shapeList.Count; i++)
-            {
-                if (shapeList[i].ShapeId == id)
-                {
-                    shapeList.RemoveAt(i);
-                    break;
-                }
-            }
+            shapeList.Add(s);
+        }
+
+        public void RemoveShape(Shape s)
+        {
+            shapeList.Remove(s);
         }
     }
 }

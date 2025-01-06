@@ -11,9 +11,13 @@ namespace MyDrawingForm
     {
         Model _m;
 
-        public List<Shape> selectedShapes = new List<Shape>();
-        private float _previewX;
-        private float _previewY;
+        public Shape selectedShape;
+        private int _previewX;
+        private int _previewY;
+        private int _startX;
+        private int _startY;
+        private int _startTextX;
+        private int _startTextY;
         private bool _isPressed;
         private bool _isTextHandlePressed;
         private bool _isOnceClickOnTextHandle;
@@ -21,13 +25,13 @@ namespace MyDrawingForm
 
         public void Initialize(Model m)
         {
-            // 當進入PointerState時，應該尚未選取任何形狀，因此清空selectedShapes
+            // 當進入PointerState時，應該尚未選取任何形狀，因此清空selectedShape
             this._m = m;
-            selectedShapes.Clear();
+            selectedShape = null;
             _isOnceClickOnTextHandle = false;
         }
 
-        public void MouseDown(float x, float y)
+        public void MouseDown(int x, int y)
         {
             // 檢查是否有選到圖形，使用相反順序檢查，以便選到最上層的圖形
             foreach (Shape _shape in Enumerable.Reverse(_m.GetShapes()))
@@ -42,7 +46,8 @@ namespace MyDrawingForm
                         {
                             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                             {
-                                _shape.UpdateText(dialog.GetTextBoxText());
+                                string newText = dialog.GetTextBoxText();
+                                _m.commandManager.Execute(new TextChangedCommand(_shape, _shape.Text, newText));
                                 _m.NotifyModelChanged();
                             }
                         }
@@ -51,10 +56,11 @@ namespace MyDrawingForm
                     }
                     else
                     {
-                        selectedShapes.Clear();
-                        AddSelectedShape(_shape);
+                        selectedShape = _shape;
                         _previewX = x;
                         _previewY = y;
+                        _startTextX = _shape.TextX;
+                        _startTextY = _shape.TextY;
                         _isPressed = true;
                         _isTextHandlePressed = true;
                         _isOnceClickOnTextHandle = true;
@@ -64,10 +70,13 @@ namespace MyDrawingForm
                 }
                 else if (_shape.IsPointInShape(x, y))
                 {
-                    selectedShapes.Clear();
-                    AddSelectedShape(_shape);
+                    selectedShape = _shape;
                     _previewX = x;
                     _previewY = y;
+                    _startX = _shape.X;
+                    _startY = _shape.Y;
+                    _startTextX = _shape.TextX;
+                    _startTextY = _shape.TextY;
                     _isPressed = true;
                     _isTextHandlePressed = false;
                     _isOnceClickOnTextHandle = false;
@@ -77,46 +86,46 @@ namespace MyDrawingForm
             }
         }
 
-        public void AddSelectedShape(Shape _shape)
-        {
-            if (!selectedShapes.Contains(_shape))
-            {
-                selectedShapes.Add(_shape);
-            }
-        }
-
-        public void MouseMove(float x, float y)
+        public void MouseMove(int x, int y)
         {
             if (_isPressed)
             {
-                int _displacementX = (int)x - (int)_previewX;
-                int _displacementY = (int)y - (int)_previewY;
+                int _displacementX = x - _previewX;
+                int _displacementY = y - _previewY;
 
-                foreach (Shape _shape in selectedShapes)
+                if (_isTextHandlePressed)
                 {
-                    if (_isTextHandlePressed)
-                    {
-                        // 只移動文字
-                        _shape.TextX += _displacementX;
-                        _shape.TextY += _displacementY;
-                    }
-                    else
-                    {
-                        // 移動整個形狀
-                        _shape.X += _displacementX;
-                        _shape.Y += _displacementY;
-                        _shape.TextX += _displacementX; // 同時移動文字
-                        _shape.TextY += _displacementY; // 同時移動文字
-                    }
-                    _previewX = x;
-                    _previewY = y;
+                    // 只移動文字
+                    selectedShape.TextX += _displacementX;
+                    selectedShape.TextY += _displacementY;
                 }
+                else
+                {
+                    // 移動整個形狀
+                    selectedShape.X += _displacementX;
+                    selectedShape.Y += _displacementY;
+                    selectedShape.TextX += _displacementX; // 同時移動文字
+                    selectedShape.TextY += _displacementY; // 同時移動文字
+                }
+                _previewX = x;
+                _previewY = y;
                 _m.NotifyModelChanged();
             }
         }
 
-        public void MouseUp(float x, float y)
+        public void MouseUp(int x, int y)
         {
+            if (_isPressed)
+            {
+                if (_isTextHandlePressed)
+                {
+                    _m.commandManager.Execute(new TextMoveCommand(selectedShape, _startTextX, _startTextY, selectedShape.TextX, selectedShape.TextY));
+                }
+                else
+                {
+                    _m.commandManager.Execute(new MoveCommand(selectedShape, _startX, _startY, selectedShape.X, selectedShape.Y));
+                }
+            }
             _isPressed = false;
             _isTextHandlePressed = false;
         }
@@ -129,14 +138,16 @@ namespace MyDrawingForm
             {
                 _shape.Draw(graphics);
             }
-            // 畫出被選中圖形的外框
-            foreach (Shape selectedShape in selectedShapes)
+            // 畫出所有的Line
+            foreach (Line line in _m.GetLines())
             {
-                if (selectedShape != null)
-                {
-                    selectedShape.DrawBoundingBox(graphics);
-                    selectedShape.DrawTextBoundingBox(graphics);
-                }
+                line.Draw(graphics);
+            }
+            // 畫出被選中圖形的外框
+            if (selectedShape != null)
+            {
+                selectedShape.DrawBoundingBox(graphics);
+                selectedShape.DrawTextBoundingBox(graphics);
             }
         }
     }

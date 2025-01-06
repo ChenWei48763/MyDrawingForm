@@ -12,7 +12,7 @@ namespace MyDrawingForm
     // 用來創建和管理圖形的工廠類別
     public class ShapeFactory
     {
-        public Shape Create(string shapeName, int id, string text, float x, float y, float height, float width)
+        public Shape Create(string shapeName, int id, string text, int x, int y, int height, int width)
         {
             switch (shapeName)
             {

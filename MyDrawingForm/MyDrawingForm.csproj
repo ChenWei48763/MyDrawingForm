@@ -48,7 +48,12 @@
   <ItemGroup>
     <Compile Include="CommandManager.cs" />
     <Compile Include="Command\AddCommand.cs" />
+    <Compile Include="Command\ConnectorCommand.cs" />
+    <Compile Include="Command\DataGridCommand.cs" />
     <Compile Include="Command\ICommand.cs" />
+    <Compile Include="Command\MoveCommand.cs" />
+    <Compile Include="Command\TextChangedCommand.cs" />
+    <Compile Include="Command\TextMoveCommand .cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -63,6 +68,8 @@
     </Compile>
     <Compile Include="FormGraphicAdapter.cs" />
     <Compile Include="IGraphics.cs" />
+    <Compile Include="Line.cs" />
+    <Compile Include="LineHint.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="PresentationModel.cs" />
     <Compile Include="Program.cs" />
@@ -70,6 +77,7 @@
     <Compile Include="ShapeFactory.cs" />
     <Compile Include="Shapes.cs" />
     <Compile Include="Shape\Decision.cs" />
+    <Compile Include="State\DrawLineState.cs" />
     <Compile Include="Shape\Process.cs" />
     <Compile Include="Shape\Shape.cs" />
     <Compile Include="Shape\Start.cs" />

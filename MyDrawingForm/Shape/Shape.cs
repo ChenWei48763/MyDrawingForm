@@ -13,14 +13,14 @@ namespace MyDrawingForm
         public int ShapeId { get; set; }
         public string ShapeName { get; set; }
         public string Text { get; set; }
-        public float X { get; set; }
-        public float Y { get; set; }
-        public float Height { get; set; }
-        public float Width { get; set; }
-        public float TextX { get; set; }
-        public float TextY { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
+        public int Height { get; set; }
+        public int Width { get; set; }
+        public int TextX { get; set; }
+        public int TextY { get; set; }
 
-        public Shape(string name, int id, string text, float x, float y, float height, float width)
+        public Shape(string name, int id, string text, int x, int y, int height, int width)
         {
             ShapeName = name;
             ShapeId = id;
@@ -37,25 +37,25 @@ namespace MyDrawingForm
         {
             if (Height < 0)
             {
-                Y += Height;
                 Height = -Height;
+                Y -= Height;
             }
 
             if (Width < 0)
             {
-                X += Width;
                 Width = -Width;
+                X -= Width;
             }
         }
 
         public abstract void Draw(IGraphics graphics);
-        public abstract bool IsPointInShape(float x, float y);
+        public abstract bool IsPointInShape(int x, int y);
 
-        public bool IsPointInTextHandle(float x, float y)
+        public bool IsPointInTextHandle(int x, int y)
         {
-            const float handleRadius = 4;
-            float handleX = TextX + 35; // 小點的X座標在文字框的中間
-            float handleY = TextY - handleRadius / 2; // 小點的Y座標在文字框的正上方
+            const int handleRadius = 4;
+            int handleX = TextX + 35;
+            int handleY = TextY - handleRadius / 2;
             return (x - handleX) * (x - handleX) + (y - handleY) * (y - handleY) <= handleRadius * handleRadius;
         }
 
@@ -66,18 +66,31 @@ namespace MyDrawingForm
 
         public void DrawTextBoundingBox(IGraphics graphics)
         {
-            const float textWidth = 70;
-            const float textHeight = 20;
-            graphics.DrawTextBoundingBox(TextX, TextY, textHeight, textWidth);
+            graphics.DrawTextBoundingBox(TextX, TextY, 20, Text.Length * 10);
             DrawTextHandle(graphics);
         }
 
         public void DrawTextHandle(IGraphics graphics)
         {
-            const float handleRadius = 4;
-            float handleX = TextX + 35; // 小點的X座標在文字框的中間
-            float handleY = TextY - handleRadius; // 小點的Y座標在文字框的正上方
+            const int handleRadius = 4;
+            int handleX = TextX + 35;
+            int handleY = TextY - handleRadius;
             graphics.DrawFilledEllipse(handleX - handleRadius, handleY, handleRadius * 2, handleRadius * 2);
+        }
+
+        public void DrawConnector(IGraphics graphics)
+        {
+            graphics.DrawDot((X + Width / 2) - 5, Y - 5, 10, 10);
+            graphics.DrawDot(X - 5, (Y + Height / 2) - 5, 10, 10);
+            graphics.DrawDot((X + Width / 2) - 5, (Y + Height) - 5, 10, 10);
+            graphics.DrawDot((X + Width) - 5, (Y + Height / 2) - 5, 10, 10);
+        }
+
+        public abstract int GetConnectorNumber(int x, int y);
+
+        public bool IsPointInCircle(int px, int py, int cx, int cy, int radius)
+        {
+            return (px - cx) * (px - cx) + (py - cy) * (py - cy) <= radius * radius;
         }
 
         public void UpdateText(string newText)

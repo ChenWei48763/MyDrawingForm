@@ -11,8 +11,8 @@ namespace MyDrawingForm
     {
         void Initialize(Model m);
         void OnPaint(IGraphics g);
-        void MouseDown(float x, float y);
-        void MouseMove(float x, float y);
-        void MouseUp(float x, float y);
+        void MouseDown(int x, int y);
+        void MouseMove(int x, int y);
+        void MouseUp(int x, int y);
     }
 }

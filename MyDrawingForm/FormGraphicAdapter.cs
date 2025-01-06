@@ -90,5 +90,10 @@ namespace MyDrawingForm
                 _graphics.FillEllipse(brush, x, y, width, height);
             }
         }
+
+        public void DrawDot(int x, int y, int width, int height)
+        {
+            _graphics.FillRectangle(new SolidBrush(Color.Black), x, y, width, height);
+        }
     }
 }
