@@ -65,10 +65,10 @@
             this.ButtonSelect = new System.Windows.Forms.ToolStripButton();
             this.ButtonUndo = new System.Windows.Forms.ToolStripButton();
             this.ButtonRedo = new System.Windows.Forms.ToolStripButton();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.drawPanel = new System.Windows.Forms.Panel();
             this.ButtonSave = new System.Windows.Forms.ToolStripButton();
             this.ButtonLoad = new System.Windows.Forms.ToolStripButton();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.drawPanel = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewShapes)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -77,6 +77,7 @@
             // 
             // dataGridViewShapes
             // 
+            this.dataGridViewShapes.AccessibleName = "dataGridViewShapes";
             this.dataGridViewShapes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewShapes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewShapes.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -147,6 +148,7 @@
             // 
             // comboBoxShape
             // 
+            this.comboBoxShape.AccessibleName = "comboBoxShape";
             this.comboBoxShape.ForeColor = System.Drawing.SystemColors.ScrollBar;
             this.comboBoxShape.FormattingEnabled = true;
             this.comboBoxShape.Items.AddRange(new object[] {
@@ -163,6 +165,7 @@
             // 
             // textBoxText
             // 
+            this.textBoxText.AccessibleName = "textBoxText";
             this.textBoxText.Location = new System.Drawing.Point(160, 58);
             this.textBoxText.Name = "textBoxText";
             this.textBoxText.Size = new System.Drawing.Size(86, 22);
@@ -172,6 +175,7 @@
             // 
             // textBoxX
             // 
+            this.textBoxX.AccessibleName = "textBoxX";
             this.textBoxX.Location = new System.Drawing.Point(252, 58);
             this.textBoxX.Name = "textBoxX";
             this.textBoxX.Size = new System.Drawing.Size(37, 22);
@@ -180,6 +184,7 @@
             // 
             // textBoxY
             // 
+            this.textBoxY.AccessibleName = "textBoxY";
             this.textBoxY.Location = new System.Drawing.Point(295, 58);
             this.textBoxY.Name = "textBoxY";
             this.textBoxY.Size = new System.Drawing.Size(37, 22);
@@ -188,6 +193,7 @@
             // 
             // textBoxHeight
             // 
+            this.textBoxHeight.AccessibleName = "textBoxHeight";
             this.textBoxHeight.Location = new System.Drawing.Point(338, 58);
             this.textBoxHeight.Name = "textBoxHeight";
             this.textBoxHeight.Size = new System.Drawing.Size(37, 22);
@@ -196,6 +202,7 @@
             // 
             // textBoxWidth
             // 
+            this.textBoxWidth.AccessibleName = "textBoxWidth";
             this.textBoxWidth.Location = new System.Drawing.Point(381, 58);
             this.textBoxWidth.Name = "textBoxWidth";
             this.textBoxWidth.Size = new System.Drawing.Size(37, 22);
@@ -281,6 +288,7 @@
             // 
             // ButtonAdd
             // 
+            this.ButtonAdd.AccessibleName = "Add";
             this.ButtonAdd.Location = new System.Drawing.Point(6, 39);
             this.ButtonAdd.Name = "ButtonAdd";
             this.ButtonAdd.Size = new System.Drawing.Size(69, 41);
@@ -352,50 +360,55 @@
             // 
             // ButtonStart
             // 
+            this.ButtonStart.AccessibleName = "Start";
             this.ButtonStart.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.ButtonStart.Image = ((System.Drawing.Image)(resources.GetObject("ButtonStart.Image")));
             this.ButtonStart.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ButtonStart.Name = "ButtonStart";
             this.ButtonStart.Size = new System.Drawing.Size(23, 22);
-            this.ButtonStart.Text = "toolStripButton1";
+            this.ButtonStart.Text = "Start";
             this.ButtonStart.ToolTipText = "Start";
             this.ButtonStart.Click += new System.EventHandler(this.ButtonStart_Click);
             // 
             // ButtonTerminator
             // 
+            this.ButtonTerminator.AccessibleName = "Terminator";
             this.ButtonTerminator.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.ButtonTerminator.Image = ((System.Drawing.Image)(resources.GetObject("ButtonTerminator.Image")));
             this.ButtonTerminator.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ButtonTerminator.Name = "ButtonTerminator";
             this.ButtonTerminator.Size = new System.Drawing.Size(23, 22);
-            this.ButtonTerminator.Text = "toolStripButton2";
+            this.ButtonTerminator.Text = "Terminator";
             this.ButtonTerminator.ToolTipText = "Terminator";
             this.ButtonTerminator.Click += new System.EventHandler(this.ButtonTerminator_Click);
             // 
             // ButtonProcess
             // 
+            this.ButtonProcess.AccessibleName = "Process";
             this.ButtonProcess.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.ButtonProcess.Image = ((System.Drawing.Image)(resources.GetObject("ButtonProcess.Image")));
             this.ButtonProcess.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ButtonProcess.Name = "ButtonProcess";
             this.ButtonProcess.Size = new System.Drawing.Size(23, 22);
-            this.ButtonProcess.Text = "toolStripButton3";
+            this.ButtonProcess.Text = "Process";
             this.ButtonProcess.ToolTipText = "Process";
             this.ButtonProcess.Click += new System.EventHandler(this.ButtonProcess_Click);
             // 
             // ButtonDecision
             // 
+            this.ButtonDecision.AccessibleName = "Decision";
             this.ButtonDecision.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.ButtonDecision.Image = ((System.Drawing.Image)(resources.GetObject("ButtonDecision.Image")));
             this.ButtonDecision.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ButtonDecision.Name = "ButtonDecision";
             this.ButtonDecision.Size = new System.Drawing.Size(23, 22);
-            this.ButtonDecision.Text = "toolStripButton4";
+            this.ButtonDecision.Text = "Decision";
             this.ButtonDecision.ToolTipText = "Decision";
             this.ButtonDecision.Click += new System.EventHandler(this.ButtonDecision_Click);
             // 
             // ButtonLine
             // 
+            this.ButtonLine.AccessibleName = "Line";
             this.ButtonLine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.ButtonLine.Image = ((System.Drawing.Image)(resources.GetObject("ButtonLine.Image")));
             this.ButtonLine.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -407,6 +420,7 @@
             // 
             // ButtonSelect
             // 
+            this.ButtonSelect.AccessibleName = "Select";
             this.ButtonSelect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.ButtonSelect.Image = ((System.Drawing.Image)(resources.GetObject("ButtonSelect.Image")));
             this.ButtonSelect.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -418,6 +432,7 @@
             // 
             // ButtonUndo
             // 
+            this.ButtonUndo.AccessibleName = "Undo";
             this.ButtonUndo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.ButtonUndo.Enabled = false;
             this.ButtonUndo.Image = ((System.Drawing.Image)(resources.GetObject("ButtonUndo.Image")));
@@ -430,6 +445,7 @@
             // 
             // ButtonRedo
             // 
+            this.ButtonRedo.AccessibleName = "Redo";
             this.ButtonRedo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.ButtonRedo.Enabled = false;
             this.ButtonRedo.Image = ((System.Drawing.Image)(resources.GetObject("ButtonRedo.Image")));
@@ -440,15 +456,9 @@
             this.ButtonRedo.ToolTipText = "Redo";
             this.ButtonRedo.Click += new System.EventHandler(this.ButtonRedo_Click);
             // 
-            // drawPanel
-            // 
-            this.drawPanel.Location = new System.Drawing.Point(178, 52);
-            this.drawPanel.Name = "drawPanel";
-            this.drawPanel.Size = new System.Drawing.Size(678, 564);
-            this.drawPanel.TabIndex = 8;
-            // 
             // ButtonSave
             // 
+            this.ButtonSave.AccessibleName = "Save";
             this.ButtonSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.ButtonSave.Image = ((System.Drawing.Image)(resources.GetObject("ButtonSave.Image")));
             this.ButtonSave.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -460,6 +470,7 @@
             // 
             // ButtonLoad
             // 
+            this.ButtonLoad.AccessibleName = "Load";
             this.ButtonLoad.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.ButtonLoad.Image = ((System.Drawing.Image)(resources.GetObject("ButtonLoad.Image")));
             this.ButtonLoad.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -468,6 +479,14 @@
             this.ButtonLoad.Text = "Load";
             this.ButtonLoad.ToolTipText = "Load";
             this.ButtonLoad.Click += new System.EventHandler(this.ButtonLoad_Click);
+            // 
+            // drawPanel
+            // 
+            this.drawPanel.AccessibleName = "drawPanel";
+            this.drawPanel.Location = new System.Drawing.Point(178, 52);
+            this.drawPanel.Name = "drawPanel";
+            this.drawPanel.Size = new System.Drawing.Size(678, 564);
+            this.drawPanel.TabIndex = 8;
             // 
             // Form1
             // 

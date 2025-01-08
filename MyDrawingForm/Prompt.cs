@@ -20,7 +20,7 @@ namespace MyDrawingForm
                 StartPosition = FormStartPosition.CenterScreen
             };
             Label textLabel = new Label() { Left = 20, Top = 20, Text = promptText };
-            TextBox textBox = new TextBox() { Left = 20, Top = 50, Width = 240, Text = defaultText };
+            TextBox textBox = new TextBox() { Left = 20, Top = 50, Width = 240, Text = defaultText, AccessibleName = "textBoxShpaeText" };
             Button confirmation = new Button() { Text = "確定", Left = 20, Width = 100, Top = 80, DialogResult = DialogResult.OK, Enabled = false };
             Button cancel = new Button() { Text = "取消", Left = 160, Width = 100, Top = 80, DialogResult = DialogResult.Cancel };
             confirmation.Click += (sender, e) => { prompt.Close(); };

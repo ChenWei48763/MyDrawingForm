@@ -232,6 +232,7 @@ namespace MyDrawingForm
             using (SaveFileDialog saveFileDialog = new SaveFileDialog())
             {
                 saveFileDialog.Filter = "MyDrawing files (*.mydrawing)|*.mydrawing|All files (*.*)|*.*";
+                saveFileDialog.FileName = "default.mydrawing";
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     ButtonSave.Enabled = false;
@@ -257,6 +258,7 @@ namespace MyDrawingForm
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.Filter = "MyDrawing files (*.mydrawing)|*.mydrawing|All files (*.*)|*.*";
+                openFileDialog.FileName = "default.mydrawing"; 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     try
