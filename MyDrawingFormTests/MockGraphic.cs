@@ -11,38 +11,38 @@ namespace MyDrawingFormTests
         {
         }
 
-        public void DrawLine(float x1, float y1, float x2, float y2)
+        public void DrawLine(int x1, int y1, int x2, int y2)
         {
         }
 
-        public void DrawRectangle(float x, float y, float height, float width)
+        public void DrawRectangle(int x, int y, int height, int width)
         {
         }
 
-        public void DrawEllipse(float x, float y, float height, float width)
+        public void DrawEllipse(int x, int y, int height, int width)
         {
         }
 
-        public void DrawArc(float x, float y, float height, float width, float startAngle, float sweepAngle)
+        public void DrawArc(int x, int y, int height, int width, int startAngle, int sweepAngle)
         {
         }
 
-        public void DrawString(string text, float x, float y)
+        public void DrawString(string text, int x, int y)
         {
         }
 
-        public void DrawPolygon(float x, float y, float height, float width)
+        public void DrawPolygon(int x, int y, int height, int width)
         {
         }
 
-        public void DrawBoundingBox(float x, float y, float height, float width)
+        public void DrawBoundingBox(int x, int y, int height, int width)
         {
         }
 
-        public void DrawTextBoundingBox(float x, float y, float height, float width)
+        public void DrawTextBoundingBox(int x, int y, int height, int width)
         {
         }
-        public void DrawFilledEllipse(float x, float y, float height, float width)
+        public void DrawFilledEllipse(int x, int y, int height, int width)
         {
         }
         public void DrawDot(int x, int y, int height, int width)

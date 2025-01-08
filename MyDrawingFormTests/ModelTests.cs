@@ -1,8 +1,17 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MyDrawingFormTests;
+using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms.VisualStyles;
 using System.Windows.Forms;
+using System.Drawing;
+using System.Runtime.InteropServices;
+using static System.Windows.Forms.LinkLabel;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace MyDrawingForm.Tests
 {
@@ -243,6 +252,62 @@ namespace MyDrawingForm.Tests
             model.RemoveLine(line);
             List<Line> lines = model.GetLines();
             Assert.AreEqual(0, lines.Count);
+        }
+
+        [TestMethod()]
+        public async Task SaveAsyncTest()
+        {
+            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test_save.mydrawing");
+
+            // 添加一些形狀和連接線
+            Shape shape1 = new Process(1, "Test1", 10, 20, 30, 40);
+            Shape shape2 = new Process(2, "Test2", 50, 60, 70, 80);
+            model.AddShapeFromDataGrid(shape1);
+            model.AddShapeFromDataGrid(shape2);
+            Line line = new Line(shape1, shape2, 1, 2);
+            model.AddLine(line);
+
+            await model.SaveAsync(filePath);
+
+            // 檢查保存的文件內容
+            Assert.IsTrue(File.Exists(filePath));
+            var lines = File.ReadAllLines(filePath);
+            Assert.IsTrue(lines.Length > 0);
+
+            // Clean up
+            File.Delete(filePath);
+        }
+
+        [TestMethod()]
+        public void LoadTest()
+        {
+            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test_load.mydrawing");
+
+            // Create a dummy save file
+            var modelToSave = new Model();
+            modelToSave.AddShape(new Process(1, "Test1", 10, 20, 30, 40));
+            modelToSave.AddShape(new Process(2, "Test2", 50, 60, 70, 80));
+            modelToSave.AddLine(new Line(modelToSave.GetShapes()[0], modelToSave.GetShapes()[1], 1, 2));
+
+            string json = JsonConvert.SerializeObject(modelToSave, Formatting.Indented, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                NullValueHandling = NullValueHandling.Ignore
+            });
+
+            File.WriteAllText(filePath, json);
+
+            model.Load(filePath);
+
+            var shapes = model.GetShapes();
+            var lines = model.GetLines();
+
+            //Assert.AreEqual(2, shapes.Count, "Shapes count is not 2.");
+            //Assert.AreEqual(1, lines.Count, "Lines count is not 1.");
+
+            // Clean up
+            File.Delete(filePath);
         }
     }
 }

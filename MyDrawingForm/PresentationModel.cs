@@ -455,10 +455,7 @@ namespace MyDrawingForm
         public void SaveAsync(string filePath)
         {
             Thread.Sleep(3000);
-            // Create a StringBuilder to build the custom format string
             var sb = new StringBuilder();
-
-            // Add shapes to the string
             sb.AppendLine("Shape ID X Y H W Text");
             List<Task> shapeTasks = new List<Task>();
             foreach (var shape in _model.GetShapes())
@@ -472,10 +469,7 @@ namespace MyDrawingForm
                 }));
             }
 
-            // Wait for all shape tasks to complete
             Task.WaitAll(shapeTasks.ToArray());
-
-            // Add lines to the string
             sb.AppendLine("---------");
             sb.AppendLine("Line ID Connection_ShapeID1 Connection_Point1 Connection_ShapeID2 Connection_Point2");
             List<Task> lineTasks = new List<Task>();
@@ -489,15 +483,10 @@ namespace MyDrawingForm
                 }));
             }
 
-            // Wait for all line tasks to complete
             Task.WaitAll(lineTasks.ToArray());
-
             sb.AppendLine("---------");
-            // Write the formatted string to the file
             File.WriteAllText(filePath, sb.ToString());
-
             _model.isChanged = false;
-            // Log success message
             Console.WriteLine("Save completed successfully.");
         }
 
@@ -505,14 +494,9 @@ namespace MyDrawingForm
         public void Load(string filePath)
         {
             Thread.Sleep(3000);
-            // Read the file content
             var lines = File.ReadAllLines(filePath);
-
-            // Clear existing shapes
             _model.shapes = new Shapes();
-
-            // Parse shapes
-            int i = 1; // Start after the header line
+            int i = 1; 
             while (i < lines.Length && !lines[i].StartsWith("---------"))
             {
                 var parts = lines[i].Split(' ');
@@ -527,14 +511,13 @@ namespace MyDrawingForm
                     string text = parts[6];
 
                     var shape = _model.shapes.GetNewShape(shapeName, text, x, y, h, w);
-                    shape.ShapeId = id; // Set the ID explicitly
+                    shape.ShapeId = id; 
                     _model.shapes.AddShape(shape);
                 }
                 i++;
             }
 
-            // Parse lines (connections)
-            i += 2; // Skip the "---------" line and the header line for lines
+            i += 2; 
             while (i < lines.Length && !lines[i].StartsWith("---------"))
             {
                 var parts = lines[i].Split(' ');

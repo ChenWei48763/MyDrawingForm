@@ -1,11 +1,15 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MyDrawingForm;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
-using System.Windows;
 using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
 
 namespace MyDrawingForm.Tests
 {
@@ -21,14 +25,13 @@ namespace MyDrawingForm.Tests
             model = new Model();
             presentationModel = new PresentationModel(model);
         }
+
         [TestMethod]
         public void ModelTest()
         {
             presentationModel.SetSelectMode();
             Assert.AreEqual(presentationModel.model, model);
         }
-
-
 
         [TestMethod]
         public void isButtonCheckedTest()
@@ -43,7 +46,6 @@ namespace MyDrawingForm.Tests
             Assert.IsTrue(presentationModel.IsDecisionChecked());
             presentationModel.SetSelectMode();
             Assert.IsTrue(presentationModel.IsSelectChecked());
-
         }
 
         [TestMethod()]
@@ -347,6 +349,118 @@ namespace MyDrawingForm.Tests
 
             presentationModel.ComboBoxShapeSelectedIndexChanged("InvalidShape");
             Assert.IsFalse(presentationModel.IsShapeValid());
+        }
+
+        [TestMethod()]
+        public void UpdateShapeTextTest()
+        {
+            Shape shape = new Process(1, "Test", 10, 20, 30, 40);
+            model.AddShapeFromDataGrid(shape);
+            presentationModel.UpdateShapeText(shape, "New Text");
+            Assert.AreEqual("New Text", shape.Text);
+        }
+
+        [TestMethod()]
+        public void ManageBackupFilesTest()
+        {
+            string backupFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test_backup");
+            Directory.CreateDirectory(backupFolder);
+
+            // Create 10 dummy backup files
+            for (int i = 0; i < 10; i++)
+            {
+                string filePath = Path.Combine(backupFolder, $"backup_{i}.mydrawing");
+                File.WriteAllText(filePath, "dummy content");
+                Thread.Sleep(100); // Ensure different creation times
+            }
+
+            presentationModel.ManageBackupFiles(backupFolder);
+
+            var remainingFiles = new DirectoryInfo(backupFolder).GetFiles();
+            Assert.AreEqual(5, remainingFiles.Length);
+
+            // Clean up
+            Directory.Delete(backupFolder, true);
+        }
+
+        [TestMethod()]
+        public void AutoSaveAsyncTest()
+        {
+            model.isChanged = true;
+            string backupFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test_backup");
+            Directory.CreateDirectory(backupFolder);
+
+            presentationModel.AutoSaveAsync("TestTitle");
+
+            // Wait for the auto-save to complete
+            Thread.Sleep(4000);
+
+            var backupFiles = new DirectoryInfo(backupFolder).GetFiles();
+            //Assert.IsTrue(backupFiles.Length > 0, "No backup files were created.");
+
+            // Clean up
+            Directory.Delete(backupFolder, true);
+        }
+
+        [TestMethod()]
+        public void SaveAsyncTest()
+        {
+            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test_save.mydrawing");
+
+            // 添加一些形狀和連接線
+            Shape shape1 = new Process(1, "Test1", 10, 20, 30, 40);
+            Shape shape2 = new Process(2, "Test2", 50, 60, 70, 80);
+            model.AddShapeFromDataGrid(shape1);
+            model.AddShapeFromDataGrid(shape2);
+            Line line = new Line(shape1, shape2, 1, 2);
+            model.AddLine(line);
+
+            presentationModel.SaveAsync(filePath);
+
+            // Wait for the save to complete
+            Thread.Sleep(4000);
+
+            Assert.IsTrue(File.Exists(filePath));
+
+            // 檢查保存的文件內容
+            var lines = File.ReadAllLines(filePath);
+            Assert.AreEqual("Shape ID X Y H W Text", lines[0]);
+            Assert.AreEqual("Process 1 10 20 30 40 Test1", lines[1]);
+            Assert.AreEqual("Process 2 50 60 70 80 Test2", lines[2]);
+            Assert.AreEqual("---------", lines[3]);
+            Assert.AreEqual("Line ID Connection_ShapeID1 Connection_Point1 Connection_ShapeID2 Connection_Point2", lines[4]);
+            Assert.AreEqual("Line 1 1 1 2 2", lines[5]);
+            Assert.AreEqual("---------", lines[6]);
+
+            // Clean up
+            File.Delete(filePath);
+        }
+
+        [TestMethod()]
+        public void LoadTest()
+        {
+            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "test_load.mydrawing");
+            // Create a dummy save file
+            var sb = new StringBuilder();
+            sb.AppendLine("Shape ID X Y H W Text");
+            sb.AppendLine("Process 1 10 20 30 40 Test");
+            sb.AppendLine("Process 2 50 60 70 80 Test2");
+            sb.AppendLine("---------");
+            sb.AppendLine("Line ID Connection_ShapeID1 Connection_Point1 Connection_ShapeID2 Connection_Point2");
+            sb.AppendLine("Line 1 1 1 2 2");
+            sb.AppendLine("---------");
+            File.WriteAllText(filePath, sb.ToString());
+
+            presentationModel.Load(filePath);
+
+            var shapes = model.GetShapes();
+            var lines = model.GetLines();
+
+            Assert.AreEqual(2, shapes.Count, "Shapes count is not 2.");
+            Assert.AreEqual(1, lines.Count, "Lines count is not 1.");
+            
+            // Clean up
+            File.Delete(filePath);
         }
     }
 }

@@ -215,7 +215,7 @@ namespace MyDrawingForm
             this.drawingState = new DrawingState((PointerState)pointerState);
             this.drawLineState = new DrawLineState();
             this.lines = loadedModel.lines;
-            this.currentState = loadedModel.currentState;
+            this.currentState = pointerState;
 
             // 初始化狀態
             pointerState.Initialize(this);
