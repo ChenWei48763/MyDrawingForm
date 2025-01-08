@@ -2,9 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Reflection;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Net.Mime.MediaTypeNames;
+using Newtonsoft.Json;
 
 namespace MyDrawingForm
 {
@@ -13,12 +17,21 @@ namespace MyDrawingForm
         private Model _model;
         private PresentationModel presentationModel;
         private Shape currentShape;
+        private Timer _autoSaveTimer;
+        private string _originalTitle;
 
         public Form1(PresentationModel presentationModel)
         {
             InitializeComponent();
             this.presentationModel = presentationModel;
             this._model = presentationModel.model;
+
+            _originalTitle = this.Text;
+
+            _autoSaveTimer = new Timer();
+            _autoSaveTimer.Interval = 30000; // 30 seconds
+            _autoSaveTimer.Tick += AutoSaveTimer_Tick;
+            _autoSaveTimer.Start();
 
             drawPanel.MouseDown += HandleCanvasPointerPressed;
             drawPanel.MouseUp += HandleCanvasPointerReleased;
@@ -192,6 +205,71 @@ namespace MyDrawingForm
         private void ButtonRedo_Click(object sender, EventArgs e)
         {
             presentationModel.Redo();
+        }
+
+        private async void AutoSaveTimer_Tick(object sender, EventArgs e)
+        {
+            if (_model.isChanged)
+            {
+                this.Text = _originalTitle + " (Auto saving...)";
+                try
+                {
+                    await Task.Factory.StartNew(() => presentationModel.AutoSaveAsync(_originalTitle));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Auto-save failed. Error: {ex.Message}", "Auto-Save Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    this.Text = _originalTitle;
+                }
+            }
+        }
+
+        private async void ButtonSave_Click(object sender, EventArgs e)
+        {
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Filter = "MyDrawing files (*.mydrawing)|*.mydrawing|All files (*.*)|*.*";
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    ButtonSave.Enabled = false;
+                    try
+                    {
+                        await Task.Factory.StartNew(() => presentationModel.SaveAsync(saveFileDialog.FileName));
+                        MessageBox.Show("儲存成功", "Save", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"儲存失敗! Error: {ex.Message}", "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    finally
+                    {
+                        ButtonSave.Enabled = true;
+                    }
+                }
+            }
+        }
+
+        private void ButtonLoad_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "MyDrawing files (*.mydrawing)|*.mydrawing|All files (*.*)|*.*";
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        presentationModel.Load(openFileDialog.FileName);
+                        MessageBox.Show("載入成功", "Load", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"載入失敗! Error: {ex.Message}", "Load Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
         }
     }
 }

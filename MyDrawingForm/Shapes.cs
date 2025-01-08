@@ -30,7 +30,7 @@ namespace MyDrawingForm
             int id;
             if (shapeList.Count == 0)
             {
-                id = 0;
+                id = 1;
             }
             else
             {
@@ -47,6 +47,11 @@ namespace MyDrawingForm
         public void RemoveShape(Shape s)
         {
             shapeList.Remove(s);
+        }
+
+        public Shape GetShape(int id)
+        {
+            return shapeList.FirstOrDefault(s => s.ShapeId == id);
         }
     }
 }

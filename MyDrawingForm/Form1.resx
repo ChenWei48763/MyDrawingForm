@@ -266,6 +266,56 @@
         RU5ErkJggg==
 </value>
   </data>
+  <data name="ButtonSave.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        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
+</value>
+  </data>
+  <data name="ButtonLoad.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALqSURBVFhHtZdHqxVBEEavOWfBtDNjAMN/MCFuRBQx/wTT
+        Rvdm3SsqignjxghmVwbEAOrCsDELKujG7DnPKZk3N7yZ8fnBgTs1Vd19Z2qqqysF1BOmwjq4BK/ge4K/
+        L8N6mAa9oNU0BrbDe/iVkw+wA8ZCaXWCDfAFshM8BZ/CsQR/a8v6fQXHcKxCGg43IT3YfVgN46EjZNUB
+        xsEquAfp2FswAnJpAryGCH4Jy6Ad5FVbWAovIMZ5A5OgoYaCjhF0GgZBPa2BtX9+1tRAOAUx3lsYBjXl
+        Y70D4bwPGmkzhO9WDQ20F8L3LtTMCZMlnM5paKD05EFLizgL4btJQ1omiN+zN30F/aGeak0eNFpEP4jc
+        cq5R8Fc7IQZZrKGGTMJGkwdboF7CLoTw261BdYdPoPERtIFasgpGcEtMh1py7Aegz2foAZUpiUFWaqij
+        weCqT8BxuA4RdyOxeU+fIVBPyyHiLNtN9duLHzBaQ07NgBhopoac8t07l3EbNVxNLp5BkWIzB2IBczXk
+        lHM8AeOcu6k4eHHRiwIquwB1Hoxz7srP5OKoFwX0Lws4DMY5d+kFzINYwHwNBdRsAWVfgYkXC5iloYCa
+        vYKySdgFrHzbkt95lU7CaxpiDyj6GZZV1WeYLkQrNPxnVRWidCl+CNlSPBv2wyE4mBN9D4BfSlbpUmyj
+        26T0ZrRIQ6KuEI+rDGZ5NwgtgLj3dzNSIyG2Y7dMt05lwrg4O2I73SIYswsisfuC7btz+KeabcfKhIjV
+        2Tyk1QdcVBGMSesMxPhu61WyTbJdCifbqNbSHohx7Zjrtuk2jFGYxIbSxrKsBsBJiPHegS1/Q02EdGds
+        a70EbLXzSl87q+cQ4/jHJkMu2SN6mIhg8dHZsHjc8hCSVXvwnrUk/SrlNlQlXUvyPZmYHq/Sg4ml1L3j
+        SMIFeAxZv29gB9wZSsvjlgdNP63sBPX4CH6+HuNaTb3BZtO9w6N49nh+Bbxnq6ZvDlUqvwGG2Vg41wKH
+        vQAAAABJRU5ErkJggg==
+</value>
+  </data>
   <metadata name="backgroundWorker1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>246, 17</value>
   </metadata>

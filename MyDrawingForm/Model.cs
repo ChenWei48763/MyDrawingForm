@@ -8,6 +8,8 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using static System.Windows.Forms.LinkLabel;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace MyDrawingForm
 {
@@ -17,6 +19,7 @@ namespace MyDrawingForm
         public CommandManager commandManager = new CommandManager();
         public event ModelChangedEventHandler ModelChanged;
         public delegate void ModelChangedEventHandler();
+        public bool isChanged;
         private string _mode = "";
 
         internal IState pointerState;
@@ -52,6 +55,7 @@ namespace MyDrawingForm
 
         public void NotifyModelChanged()
         {
+            isChanged = true;
             if (ModelChanged != null)
                 ModelChanged();
         }
@@ -173,6 +177,53 @@ namespace MyDrawingForm
             {
                 dataGridViewShapes.Rows.Add("刪除", shape.ShapeId, shape.GetType().Name, shape.Text, shape.X, shape.Y, shape.Height, shape.Width);
             }
+        }
+
+        public async Task SaveAsync(string filePath)
+        {
+            // 模擬延遲
+            await Task.Delay(3000);
+
+            // 序列化 Model 並保存到文件
+            string json = JsonConvert.SerializeObject(this, Formatting.Indented, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                NullValueHandling = NullValueHandling.Ignore
+            });
+
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                await writer.WriteAsync(json);
+            }
+        }
+
+        public void Load(string filePath)
+        {
+            // 反序列化 Model 從文件中加載
+            string json = File.ReadAllText(filePath);
+            var loadedModel = JsonConvert.DeserializeObject<Model>(json, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto
+            });
+
+            // 更新當前 Model 的狀態
+            this.shapes = loadedModel.shapes;
+            this.commandManager = loadedModel.commandManager;
+            this._mode = loadedModel._mode;
+            this.pointerState = new PointerState();
+            this.drawingState = new DrawingState((PointerState)pointerState);
+            this.drawLineState = new DrawLineState();
+            this.lines = loadedModel.lines;
+            this.currentState = loadedModel.currentState;
+
+            // 初始化狀態
+            pointerState.Initialize(this);
+            drawingState.Initialize(this);
+            drawLineState.Initialize(this);
+
+            // 更新狀態
+            NotifyModelChanged();
         }
     }
 }

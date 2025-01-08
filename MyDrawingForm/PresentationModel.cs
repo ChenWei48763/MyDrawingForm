@@ -3,8 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -418,6 +420,143 @@ namespace MyDrawingForm
             ICommand command = new TextChangedCommand(shape, oldText, newText);
             _model.commandManager.Execute(command);
             Notify("ShapeTextUpdated");
+        }
+
+        public void ManageBackupFiles(string backupFolder)
+        {
+            var backupFiles = new DirectoryInfo(backupFolder).GetFiles()
+                .OrderByDescending(f => f.CreationTime)
+                .Skip(5)
+                .ToList();
+
+            foreach (var file in backupFiles)
+            {
+                file.Delete();
+            }
+        }
+
+        public void AutoSaveAsync(string originalTitle)
+        {
+            if (_model.isChanged)
+            {
+                string backupFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "drawing_backup");
+                Directory.CreateDirectory(backupFolder);
+
+                string timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+                string backupFileName = $"{timestamp}_bak.mydrawing";
+                string backupFilePath = Path.Combine(backupFolder, backupFileName);
+
+                SaveAsync(backupFilePath);
+                ManageBackupFiles(backupFolder);
+            }
+        }
+
+
+        public void SaveAsync(string filePath)
+        {
+            Thread.Sleep(3000);
+            // Create a StringBuilder to build the custom format string
+            var sb = new StringBuilder();
+
+            // Add shapes to the string
+            sb.AppendLine("Shape ID X Y H W Text");
+            List<Task> shapeTasks = new List<Task>();
+            foreach (var shape in _model.GetShapes())
+            {
+                shapeTasks.Add(Task.Run(() =>
+                {
+                    if (shape.ShapeName != "Line")
+                    {
+                        sb.AppendLine($"{shape.ShapeName} {shape.ShapeId} {shape.X} {shape.Y} {shape.Height} {shape.Width} {shape.Text}");
+                    }
+                }));
+            }
+
+            // Wait for all shape tasks to complete
+            Task.WaitAll(shapeTasks.ToArray());
+
+            // Add lines to the string
+            sb.AppendLine("---------");
+            sb.AppendLine("Line ID Connection_ShapeID1 Connection_Point1 Connection_ShapeID2 Connection_Point2");
+            List<Task> lineTasks = new List<Task>();
+            foreach (var line in _model.GetLines())
+            {
+                lineTasks.Add(Task.Run(() =>
+                {
+                    var (connShapeId1, connPoint1) = (line.FromShape.ShapeId, line.FromConnector);
+                    var (connShapeId2, connPoint2) = (line.ToShape.ShapeId, line.ToConnector);
+                    sb.AppendLine($"Line {line.FromShape.ShapeId} {connShapeId1} {connPoint1} {connShapeId2} {connPoint2}");
+                }));
+            }
+
+            // Wait for all line tasks to complete
+            Task.WaitAll(lineTasks.ToArray());
+
+            sb.AppendLine("---------");
+            // Write the formatted string to the file
+            File.WriteAllText(filePath, sb.ToString());
+
+            _model.isChanged = false;
+            // Log success message
+            Console.WriteLine("Save completed successfully.");
+        }
+
+
+        public void Load(string filePath)
+        {
+            Thread.Sleep(3000);
+            // Read the file content
+            var lines = File.ReadAllLines(filePath);
+
+            // Clear existing shapes
+            _model.shapes = new Shapes();
+
+            // Parse shapes
+            int i = 1; // Start after the header line
+            while (i < lines.Length && !lines[i].StartsWith("---------"))
+            {
+                var parts = lines[i].Split(' ');
+                if (parts.Length >= 7)
+                {
+                    string shapeName = parts[0];
+                    int id = int.Parse(parts[1]);
+                    int x = int.Parse(parts[2]);
+                    int y = int.Parse(parts[3]);
+                    int h = int.Parse(parts[4]);
+                    int w = int.Parse(parts[5]);
+                    string text = parts[6];
+
+                    var shape = _model.shapes.GetNewShape(shapeName, text, x, y, h, w);
+                    shape.ShapeId = id; // Set the ID explicitly
+                    _model.shapes.AddShape(shape);
+                }
+                i++;
+            }
+
+            // Parse lines (connections)
+            i += 2; // Skip the "---------" line and the header line for lines
+            while (i < lines.Length && !lines[i].StartsWith("---------"))
+            {
+                var parts = lines[i].Split(' ');
+                if (parts.Length >= 6)
+                {
+                    int id = int.Parse(parts[1]);
+                    int connShapeId1 = int.Parse(parts[2]);
+                    int connPoint1 = int.Parse(parts[3]);
+                    int connShapeId2 = int.Parse(parts[4]);
+                    int connPoint2 = int.Parse(parts[5]);
+
+                    var fromShape = _model.shapes.GetShapes().FirstOrDefault(s => s.ShapeId == connShapeId1);
+                    var toShape = _model.shapes.GetShapes().FirstOrDefault(s => s.ShapeId == connShapeId2);
+
+                    if (fromShape != null && toShape != null)
+                    {
+                        var line = new Line(fromShape, toShape, connPoint1, connPoint2);
+                        _model.AddLine(line);
+                    }
+                }
+                i++;
+            }
         }
     }
 }

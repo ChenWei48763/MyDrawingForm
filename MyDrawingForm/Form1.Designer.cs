@@ -67,6 +67,8 @@
             this.ButtonRedo = new System.Windows.Forms.ToolStripButton();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.drawPanel = new System.Windows.Forms.Panel();
+            this.ButtonSave = new System.Windows.Forms.ToolStripButton();
+            this.ButtonLoad = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewShapes)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -339,7 +341,9 @@
             this.ButtonLine,
             this.ButtonSelect,
             this.ButtonUndo,
-            this.ButtonRedo});
+            this.ButtonRedo,
+            this.ButtonSave,
+            this.ButtonLoad});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1310, 25);
@@ -397,7 +401,7 @@
             this.ButtonLine.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ButtonLine.Name = "ButtonLine";
             this.ButtonLine.Size = new System.Drawing.Size(23, 22);
-            this.ButtonLine.Text = "toolStripButton1";
+            this.ButtonLine.Text = "Line";
             this.ButtonLine.ToolTipText = "Line";
             this.ButtonLine.Click += new System.EventHandler(this.ButtonLine_Click);
             // 
@@ -408,7 +412,7 @@
             this.ButtonSelect.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ButtonSelect.Name = "ButtonSelect";
             this.ButtonSelect.Size = new System.Drawing.Size(23, 22);
-            this.ButtonSelect.Text = "toolStripButton1";
+            this.ButtonSelect.Text = "Select";
             this.ButtonSelect.ToolTipText = "Select";
             this.ButtonSelect.Click += new System.EventHandler(this.ButtonSelect_Click);
             // 
@@ -420,7 +424,7 @@
             this.ButtonUndo.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ButtonUndo.Name = "ButtonUndo";
             this.ButtonUndo.Size = new System.Drawing.Size(23, 22);
-            this.ButtonUndo.Text = "toolStripButton2";
+            this.ButtonUndo.Text = "Undo";
             this.ButtonUndo.ToolTipText = "Undo";
             this.ButtonUndo.Click += new System.EventHandler(this.ButtonUndo_Click);
             // 
@@ -432,16 +436,38 @@
             this.ButtonRedo.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ButtonRedo.Name = "ButtonRedo";
             this.ButtonRedo.Size = new System.Drawing.Size(23, 22);
-            this.ButtonRedo.Text = "toolStripButton3";
+            this.ButtonRedo.Text = "Redo";
             this.ButtonRedo.ToolTipText = "Redo";
             this.ButtonRedo.Click += new System.EventHandler(this.ButtonRedo_Click);
             // 
             // drawPanel
             // 
-            this.drawPanel.Location = new System.Drawing.Point(178, 44);
+            this.drawPanel.Location = new System.Drawing.Point(178, 52);
             this.drawPanel.Name = "drawPanel";
-            this.drawPanel.Size = new System.Drawing.Size(678, 572);
+            this.drawPanel.Size = new System.Drawing.Size(678, 564);
             this.drawPanel.TabIndex = 8;
+            // 
+            // ButtonSave
+            // 
+            this.ButtonSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ButtonSave.Image = ((System.Drawing.Image)(resources.GetObject("ButtonSave.Image")));
+            this.ButtonSave.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ButtonSave.Name = "ButtonSave";
+            this.ButtonSave.Size = new System.Drawing.Size(23, 22);
+            this.ButtonSave.Text = "Save";
+            this.ButtonSave.ToolTipText = "Save";
+            this.ButtonSave.Click += new System.EventHandler(this.ButtonSave_Click);
+            // 
+            // ButtonLoad
+            // 
+            this.ButtonLoad.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ButtonLoad.Image = ((System.Drawing.Image)(resources.GetObject("ButtonLoad.Image")));
+            this.ButtonLoad.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ButtonLoad.Name = "ButtonLoad";
+            this.ButtonLoad.Size = new System.Drawing.Size(23, 22);
+            this.ButtonLoad.Text = "Load";
+            this.ButtonLoad.ToolTipText = "Load";
+            this.ButtonLoad.Click += new System.EventHandler(this.ButtonLoad_Click);
             // 
             // Form1
             // 
@@ -509,6 +535,8 @@
         private System.Windows.Forms.ToolStripButton ButtonLine;
         private System.Windows.Forms.ToolStripButton ButtonUndo;
         private System.Windows.Forms.ToolStripButton ButtonRedo;
+        private System.Windows.Forms.ToolStripButton ButtonSave;
+        private System.Windows.Forms.ToolStripButton ButtonLoad;
     }
 }
 
