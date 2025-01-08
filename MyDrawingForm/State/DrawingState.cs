@@ -49,28 +49,50 @@ namespace MyDrawingForm
                 int newWidth = x - _firstPointX;
                 int newHeight = y - _firstPointY;
 
+                bool shouldRedraw = false;
+
                 if (newWidth < 0)
                 {
-                    _previewShape.X = x;
-                    _previewShape.Width = -newWidth;
+                    if (_previewShape.X != x || _previewShape.Width != -newWidth)
+                    {
+                        _previewShape.X = x;
+                        _previewShape.Width = -newWidth;
+                        shouldRedraw = true;
+                    }
                 }
                 else
                 {
-                    _previewShape.X = _firstPointX;
-                    _previewShape.Width = newWidth;
+                    if (_previewShape.X != _firstPointX || _previewShape.Width != newWidth)
+                    {
+                        _previewShape.X = _firstPointX;
+                        _previewShape.Width = newWidth;
+                        shouldRedraw = true;
+                    }
                 }
 
                 if (newHeight < 0)
                 {
-                    _previewShape.Y = y;
-                    _previewShape.Height = -newHeight;
+                    if (_previewShape.Y != y || _previewShape.Height != -newHeight)
+                    {
+                        _previewShape.Y = y;
+                        _previewShape.Height = -newHeight;
+                        shouldRedraw = true;
+                    }
                 }
                 else
                 {
-                    _previewShape.Y = _firstPointY;
-                    _previewShape.Height = newHeight;
+                    if (_previewShape.Y != _firstPointY || _previewShape.Height != newHeight)
+                    {
+                        _previewShape.Y = _firstPointY;
+                        _previewShape.Height = newHeight;
+                        shouldRedraw = true;
+                    }
                 }
-                _m.NotifyModelChanged();
+
+                if (shouldRedraw)
+                {
+                    _m.NotifyModelChanged();
+                }
             }
         }
 

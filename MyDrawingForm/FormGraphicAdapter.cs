@@ -25,22 +25,22 @@ namespace MyDrawingForm
             // OnPaint時會自動清除畫面，因此不需實作
         }
 
-        public void DrawLine(float x1, float y1, float x2, float y2)
+        public void DrawLine(int x1, int y1, int x2, int y2)
         {
             _graphics.DrawLine(_pen, x1, y1, x2, y2);
         }
 
-        public void DrawRectangle(float x, float y, float height, float width)
+        public void DrawRectangle(int x, int y, int height, int width)
         {
             _graphics.DrawRectangle(_pen, x, y, width, height);
         }
 
-        public void DrawEllipse(float x, float y, float height, float width)
+        public void DrawEllipse(int x, int y, int height, int width)
         {
             _graphics.DrawEllipse(_pen, x, y, width, height);
         }
 
-        public void DrawArc(float x, float y, float height, float width, float startAngle, float sweepAngle)
+        public void DrawArc(int x, int y, int height, int width, int startAngle, int sweepAngle)
         {
             try
             {
@@ -52,12 +52,12 @@ namespace MyDrawingForm
             }
         }
 
-        public void DrawString(string text, float x, float y)
+        public void DrawString(string text, int x, int y)
         {
             _graphics.DrawString(text, _font, _brush, x, y);
         }
 
-        public void DrawPolygon(float x, float y, float height, float width)
+        public void DrawPolygon(int x, int y, int height, int width)
         {
             Point[] points = new Point[4];
             points[0] = new Point((int)(x + height / 2), (int)y);
@@ -67,7 +67,7 @@ namespace MyDrawingForm
             _graphics.DrawPolygon(_pen, points);
         }
 
-        public void DrawBoundingBox(float x, float y, float height, float width)
+        public void DrawBoundingBox(int x, int y, int height, int width)
         {
             using (Pen redPen = new Pen(Color.Red, 3))
             {
@@ -75,7 +75,7 @@ namespace MyDrawingForm
             }
         }
 
-        public void DrawTextBoundingBox(float x, float y, float height, float width)
+        public void DrawTextBoundingBox(int x, int y, int height, int width)
         {
             using (Pen redPen = new Pen(Color.Red, 2))
             {
@@ -83,7 +83,7 @@ namespace MyDrawingForm
             }
         }
 
-        public void DrawFilledEllipse(float x, float y, float height, float width)
+        public void DrawFilledEllipse(int x, int y, int height, int width)
         {
             using (Brush brush = new SolidBrush(Color.Orange))
             {
